@@ -13,15 +13,18 @@ def test_cli_hash(capsys, tmp_path) -> None:
 
 def test_cli_manifest_template(tmp_path) -> None:
     target = tmp_path / "octdl.json"
-    assert main(
-        [
-            "manifest-template",
-            "--dataset-id",
-            "octdl_v4",
-            "--title",
-            "OCTDL",
-            "--output",
-            str(target),
-        ]
-    ) == 0
+    assert (
+        main(
+            [
+                "manifest-template",
+                "--dataset-id",
+                "octdl_v4",
+                "--title",
+                "OCTDL",
+                "--output",
+                str(target),
+            ]
+        )
+        == 0
+    )
     assert '"acquisition_status": "candidate"' in target.read_text()
