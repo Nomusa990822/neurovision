@@ -16,9 +16,11 @@ class ArchiveMember:
 
 
 def _safe_relative_name(name: str) -> PurePosixPath:
-    normalized = name.replace("\\\\", "/")
+    normalized = name.replace("\\", "/")
     candidate = PurePosixPath(normalized)
-    if candidate.is_absolute() or not candidate.parts or any(part in {"", ".", ".."} for part in candidate.parts):
+    if candidate.is_absolute() or not candidate.parts or any(
+        part in {"", ".", ".."} for part in candidate.parts
+    ):
         raise ValueError(f"Unsafe archive member path: {name!r}")
     if candidate.parts[0].endswith(":"):
         raise ValueError(f"Unsafe archive member path: {name!r}")
@@ -31,7 +33,9 @@ def inspect_archive(path: Path) -> list[ArchiveMember]:
     if zipfile.is_zipfile(path):
         with zipfile.ZipFile(path) as archive:
             for item in archive.infolist():
-                _safe_relative_name(item.filename.rstrip("/")) if item.filename.rstrip("/") else None
+                name = item.filename.rstrip("/")
+                if name:
+                    _safe_relative_name(name)
                 mode = (item.external_attr >> 16) & 0o170000
                 if mode == 0o120000:
                     raise ValueError(f"Symbolic links are not allowed in archives: {item.filename}")
@@ -40,7 +44,9 @@ def inspect_archive(path: Path) -> list[ArchiveMember]:
     if tarfile.is_tarfile(path):
         with tarfile.open(path, "r:*") as archive:
             for item in archive.getmembers():
-                _safe_relative_name(item.name.rstrip("/")) if item.name.rstrip("/") else None
+                name = item.name.rstrip("/")
+                if name:
+                    _safe_relative_name(name)
                 if not (item.isfile() or item.isdir()):
                     raise ValueError(f"Special TAR members are not allowed: {item.name}")
                 members.append(ArchiveMember(item.name, item.size, item.isdir()))
@@ -69,10 +75,14 @@ def safe_extract_archive(
         raise ValueError("Archive exceeds maximum uncompressed size")
 
     root = destination.resolve()
+    extracted_bytes = 0
     if zipfile.is_zipfile(archive_path):
         with zipfile.ZipFile(archive_path) as archive:
             for item in archive.infolist():
-                target = (root / _safe_relative_name(item.filename.rstrip("/"))).resolve()
+                name = item.filename.rstrip("/")
+                if not name:
+                    continue
+                target = (root / Path(*_safe_relative_name(name).parts)).resolve()
                 if root not in target.parents and target != root:
                     raise ValueError(f"Archive member escapes destination: {item.filename}")
                 if item.is_dir():
@@ -81,11 +91,17 @@ def safe_extract_archive(
                 target.parent.mkdir(parents=True, exist_ok=True)
                 with archive.open(item) as source, target.open("xb") as output:
                     while chunk := source.read(1024 * 1024):
+                        extracted_bytes += len(chunk)
+                        if extracted_bytes > max_total_bytes:
+                            raise ValueError("Archive exceeds maximum uncompressed size while extracting")
                         output.write(chunk)
     else:
         with tarfile.open(archive_path, "r:*") as archive:
             for item in archive.getmembers():
-                relative = _safe_relative_name(item.name.rstrip("/"))
+                name = item.name.rstrip("/")
+                if not name:
+                    continue
+                relative = _safe_relative_name(name)
                 target = (root / Path(*relative.parts)).resolve()
                 if root not in target.parents and target != root:
                     raise ValueError(f"Archive member escapes destination: {item.name}")
@@ -98,5 +114,8 @@ def safe_extract_archive(
                 target.parent.mkdir(parents=True, exist_ok=True)
                 with source, target.open("xb") as output:
                     while chunk := source.read(1024 * 1024):
+                        extracted_bytes += len(chunk)
+                        if extracted_bytes > max_total_bytes:
+                            raise ValueError("Archive exceeds maximum uncompressed size while extracting")
                         output.write(chunk)
     return len(files)
