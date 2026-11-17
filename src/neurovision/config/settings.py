@@ -29,9 +29,7 @@ class Settings:
         """Build settings from NEUROVISION_* variables and validate their values."""
         raw_environment = os.getenv("NEUROVISION_ENVIRONMENT", "development").strip().lower()
         if raw_environment not in {"development", "testing", "production"}:
-            raise ValueError(
-                "NEUROVISION_ENVIRONMENT must be development, testing or production"
-            )
+            raise ValueError("NEUROVISION_ENVIRONMENT must be development, testing or production")
 
         log_level = os.getenv("NEUROVISION_LOG_LEVEL", "INFO").strip().upper()
         if log_level not in _ALLOWED_LOG_LEVELS:
