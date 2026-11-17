@@ -59,9 +59,9 @@ Technology choices are subject to documented architecture decisions and feasibil
 ## Project status
 
 **Current phase:** Phase 1 — Project Establishment  
-**Current state:** Foundation documentation being established. No model training or experimental results are claimed.
+**Repository state:** Documentation-first repository. The application scaffold is not implemented; no model training or experimental results are claimed.
 
-See [the roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [decision register](docs/decisions.md) and [risk register](docs/risk-register.md).
+See [the roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repository audit](docs/architecture/repository-audit.md), [decision register](docs/decisions.md) and [risk register](docs/risk-register.md).
 
 ## Scientific integrity
 
