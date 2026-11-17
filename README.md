@@ -2,27 +2,41 @@
 
 **Explainable and Uncertainty-Aware AI for Retinal Disease Detection Using Optical Coherence Tomography (OCT).**
 
-NeuroVision is a research and engineering project investigating how deep learning, explainability, predictive uncertainty, calibration and rigorous validation can be combined in a reproducible platform for retinal OCT image classification.
+NeuroVision investigates deep learning, explainability, predictive uncertainty, calibration and rigorous validation for retinal OCT image classification.
 
 > **Research prototype notice:** NeuroVision is not a clinically validated medical device and must not be used to diagnose, triage or guide treatment. Research outputs require expert interpretation and independent validation.
 
-## Project objectives
+## Current status
 
-- Build a traceable, governed OCT dataset pipeline.
-- Prevent patient-level leakage in dataset partitioning.
-- Establish reproducible deep-learning baselines and controlled model comparisons.
-- Investigate visual explanation methods and their limitations.
-- Estimate predictive uncertainty and evaluate probability calibration.
-- Assess internal performance, robustness and external generalisation.
-- Deliver a modular API and research dashboard with experiment traceability.
+**Phase:** 2 — Engineering Foundation
+**WP05–WP08:** implementation merged.
+**Next:** Phase 3 — Dataset acquisition and audit.
+
+Verified engineering baseline:
+- Python 3.12 src-layout package with standard-library settings, path helpers and Python RNG seeding.
+- Committed uv.lock and GitHub Actions quality workflow.
+- 15 unit tests passed; 98% statement coverage in the verified run.
+- Ruff lint/format, mypy and package build passed.
+- Non-root Docker image (UID 10001) built and smoke-tested, including production settings and writable data directory.
+- PR #5 merged as a975754c747a1c8996d842829a0223fb98b353df after both Python quality and Docker smoke-test jobs passed.
+
+**Final integration check:** the post-merge main-branch workflow is still the final gate before formal Phase 1/2 sign-off.
+
+**Dataset status:** No OCT data has been acquired and no model has been trained. Dataset acquisition, licence verification, integrity checks and empirical patient-level audit remain Phase 3 work.
+
+## Project objectives
+- Governed OCT dataset pipeline and patient-level leakage prevention.
+- Reproducible deep-learning baselines and controlled model comparisons.
+- Investigation of visual explanation methods and their limitations.
+- Predictive uncertainty, probability calibration and selective prediction.
+- Internal performance, robustness and external generalisation evaluation.
+- Modular API and research dashboard with experiment traceability.
 
 ## Planned technology
-
 | Area | Technology |
 |---|---|
-| Language | Python 3.12 baseline |
-| Dependency management | uv, `pyproject.toml`, committed `uv.lock` |
-| Deep learning | PyTorch (modelling phase) |
+| Language | Python 3.12 |
+| Deep learning | PyTorch |
 | Image processing | OpenCV, NumPy |
 | API / database | FastAPI / PostgreSQL |
 | Experiment tracking | MLflow |
@@ -30,35 +44,9 @@ NeuroVision is a research and engineering project investigating how deep learnin
 | Quality | Pytest, Ruff, mypy |
 | Deployment / CI | Docker / GitHub Actions |
 
-See the [Phase 2 engineering specification](docs/engineering/phase-2-specification.md), [development setup](docs/engineering/development-setup.md) and [Docker guide](docs/engineering/docker.md).
-
-## Repository structure
-
-- `docs/` — research, governance, architecture and engineering documentation.
-- `src/neurovision/` — installable Python package.
-- `tests/` — unit, integration, data, scientific and reproducibility tests.
-- `data/` — manifests and metadata only; raw datasets are not committed.
-- `configs/`, `experiments/`, `models/`, `notebooks/`, `scripts/`, `web/`, `docker/` — planned research and application areas.
-
-## Current status
-
-**Phase:** 2 — Engineering Foundation  
-**Current work package:** WP08 — Docker baseline and final Phase 2 acceptance
-
-**Verified engineering baseline (WP06–WP08):**
-- Python 3.12 src-layout package, immutable standard-library settings, path helpers and Python RNG seeding.
-- Committed `uv.lock` generated and verified on GitHub-hosted Python 3.12 runners.
-- GitHub Actions quality workflow with locked dependency verification, tests, Ruff, mypy and package builds.
-- 15 unit tests passed; 98% statement coverage in the verified run.
-- Non-root Docker runtime baseline with a CI smoke test for package import, production settings, UID 10001 and writable application data directory.
-- WP08 PR #5 passed both Python quality and Docker smoke-test jobs on its current head.
-
-**Still pending:** PR #5 review/merge and formal Phase 2 acceptance record, including formal Phase 1 closure. No OCT data has been acquired and no model has been trained. Dataset acquisition and empirical patient/integrity audit remain Phase 3 work.
-
-See the [roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repository audit](docs/architecture/repository-audit.md), [decision register](docs/decisions.md) and [risk register](docs/risk-register.md).
+See docs/engineering/phase-2-specification.md, docs/engineering/development-setup.md, docs/engineering/docker.md and docs/roadmap.md.
 
 ## Scientific integrity
-
 - Preserve original datasets and record provenance, licence and acquisition details.
 - Never overwrite raw data.
 - Use patient-aware grouping whenever reliable patient identifiers are available.
@@ -69,5 +57,4 @@ See the [roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repos
 - Do not fabricate results or imply clinical validation.
 
 ## Licence
-
-Original NeuroVision software and project-authored materials are licensed under [Apache License 2.0](LICENSE) (SPDX: Apache-2.0). Third-party code, datasets, OCT images, annotations, pretrained weights and other assets remain subject to their own licences and terms. See [dataset governance](docs/datasets/governance.md).
+Original NeuroVision software and project-authored materials are licensed under Apache License 2.0. Third-party code, datasets, OCT images, annotations, pretrained weights and other assets remain subject to their own licences and terms.
