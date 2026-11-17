@@ -13,7 +13,7 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - Non-root Docker runtime, build-context exclusions, Docker guide and ADR-021.
 - GitHub Actions Docker build and container smoke-test job.
 - Formal Phase 1/2 acceptance record.
-- Phase 3 dataset acquisition and audit protocol.
+- Phase 3 dataset acquisition and audit protocol.\n- Local dataset manifest, SHA-256, archive inspection/extraction, inventory CLI and synthetic tests (WP10).
 - Local dataset manifest, SHA-256, archive inspection/extraction, inventory CLI and synthetic tests (WP10; pending merge).
 
 ### Changed
@@ -27,6 +27,7 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - Post-merge main workflows #44050377840, #44050384243 and #44050390407 all completed successfully.
 
 ### Pending
+- Acquire an approved version-pinned OCT dataset outside Git and record immutable provenance.
 - WP10 CI and review.
 - Select and acquire a version-pinned OCT dataset under verified terms.
 - Empirical image integrity, label, metadata, duplicate and patient-group audit (Phase 3).
