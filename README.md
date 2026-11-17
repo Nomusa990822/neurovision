@@ -29,18 +29,21 @@ NeuroVision is a research and engineering project investigating how deep learnin
 
 | Area | Technology |
 |---|---|
-| Language | Python |
-| Deep learning | PyTorch |
+| Language | Python 3.12 baseline (Phase 2 decision) |
+| Dependency management | uv, `pyproject.toml`, committed `uv.lock` |
+| Deep learning | PyTorch (introduced with modelling dependencies) |
 | Image processing | OpenCV, NumPy |
 | API | FastAPI |
 | Database | PostgreSQL |
 | Experiment tracking | MLflow |
 | Dataset/pipeline versioning | DVC |
 | Testing | Pytest |
+| Linting/formatting | Ruff |
+| Static typing | mypy |
 | Deployment | Docker |
 | CI | GitHub Actions |
 
-Technology choices are subject to documented architecture decisions and feasibility checks.
+See the [Phase 2 engineering specification](docs/engineering/phase-2-specification.md). These are selected standards and planned technologies; only items explicitly implemented and verified should be described as operational.
 
 ## Repository map
 
@@ -51,17 +54,18 @@ Technology choices are subject to documented architecture decisions and feasibil
 - `models/` — model architectures and interfaces.
 - `notebooks/` — exploratory analysis, not production pipelines.
 - `scripts/` — repeatable command-line workflows.
-- `src/neurovision/` — installable Python package.
+- `src/neurovision/` — installable Python package (planned Phase 2 scaffold).
 - `tests/` — unit, integration, data, scientific and reproducibility tests.
 - `web/` — research dashboard.
 - `docker/` — container and deployment assets.
 
 ## Project status
 
-**Current phase:** Phase 1 — Project Establishment  
-**Repository state:** Documentation-first repository. The application scaffold is not implemented; no model training or experimental results are claimed.
+**Current phase:** Phase 1 — Project Establishment (final approval pending)  
+**Current work package:** WP05 — Phase 2 engineering specification (documented; implementation not started)  
+**Repository state:** Documentation-first repository. The application scaffold, dependency lock, CI workflow and Docker image are not yet verified. No model training or experimental results are claimed.
 
-See [the roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repository audit](docs/architecture/repository-audit.md), [decision register](docs/decisions.md) and [risk register](docs/risk-register.md).
+See the [roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repository audit](docs/architecture/repository-audit.md), [decision register](docs/decisions.md), [risk register](docs/risk-register.md) and [engineering specification](docs/engineering/phase-2-specification.md).
 
 ## Scientific integrity
 
@@ -85,10 +89,11 @@ Start with:
 6. [Data governance](docs/datasets/governance.md)
 7. [Evaluation protocol](docs/experiments/evaluation-protocol.md)
 8. [Reproducibility strategy](docs/testing/reproducibility-strategy.md)
+9. [Phase 2 engineering specification](docs/engineering/phase-2-specification.md)
 
 ## Development
 
-The project will introduce a pinned, reproducible Python environment and automated checks during Phase 2. Until then, do not assume dependencies or runtime commands have been verified.
+Phase 2 will implement the Python package, locked environment, automated quality checks and Docker baseline. Until those artefacts are committed and verified, setup commands and CI status must not be assumed.
 
 ## Licence
 
