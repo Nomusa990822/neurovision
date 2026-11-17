@@ -50,9 +50,10 @@ See the [Phase 2 engineering specification](docs/engineering/phase-2-specificati
 - Committed `uv.lock` generated and verified on GitHub-hosted Python 3.12 runners.
 - GitHub Actions quality workflow with locked dependency verification, tests, Ruff, mypy and package builds.
 - 15 unit tests passed; 98% statement coverage in the verified run.
-- Non-root Docker runtime baseline with a CI smoke test for package import, production settings and writable application data directory.
+- Non-root Docker runtime baseline with a CI smoke test for package import, production settings, UID 10001 and writable application data directory.
+- WP08 PR #5 passed both Python quality and Docker smoke-test jobs on its current head.
 
-**Still pending:** successful execution of the WP08 Docker workflow on the open PR, final documentation/acceptance review and formal Phase 1 closure. No OCT data has been acquired and no model has been trained. Dataset acquisition and empirical patient/integrity audit remain Phase 3 work.
+**Still pending:** PR #5 review/merge and formal Phase 2 acceptance record, including formal Phase 1 closure. No OCT data has been acquired and no model has been trained. Dataset acquisition and empirical patient/integrity audit remain Phase 3 work.
 
 See the [roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repository audit](docs/architecture/repository-audit.md), [decision register](docs/decisions.md) and [risk register](docs/risk-register.md).
 
