@@ -1,15 +1,15 @@
 # NeuroVision Development Roadmap
 
 **Current phase:** Phase 1 — Project Establishment  
-**Status:** Foundation documentation committed; Phase 1 remains open pending verification.
+**Status:** Foundation documentation committed; primary-source desk review of initial OCT dataset candidates recorded. Phase 1 remains open pending repository review and final governance decisions.
 
 Durations are planning estimates, not commitments. Dependencies and dataset access may change the schedule.
 
 | Phase | Scope | Exit evidence | Status |
 |---|---|---|---|
-| 1. Project establishment | Charter, objectives, requirements, architecture, governance, roadmap | Approved documents and verified repository baseline | In progress |
+| 1. Project establishment | Charter, objectives, requirements, architecture, governance, roadmap, source verification | Approved documents, verified repository baseline and signed-off Phase 1 review | In progress |
 | 2. Engineering foundation | Python package, pinned environment, CI, Docker, tests, logging | Clean setup, passing CI and documented commands | Proposed |
-| 3. Dataset acquisition/audit | Source/licence checks, acquisition, hashes, metadata, quality and patient audit | Dataset register, manifests, audit report | Proposed |
+| 3. Dataset acquisition/audit | Exact source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | Dataset register, manifests, audit report and purpose-specific approval | Proposed |
 | 4. EDA and preprocessing | Distribution, image quality, preprocessing and split design | Reproducible pipeline and leakage tests | Proposed |
 | 5. Baseline modelling | Baseline CNN and evaluation | Reproducible baseline report and checkpoint | Proposed |
 | 6. Model investigation | Controlled architecture comparisons and ablations | Comparative experiment report | Proposed |
@@ -21,6 +21,7 @@ Durations are planning estimates, not commitments. Dependencies and dataset acce
 | 12. Reporting/release | Model cards, technical report and reproducibility audit | Reviewed release package | Proposed |
 
 ## Release milestones
+
 - v0.1.0 — engineering foundation.
 - v0.2.0 — audited dataset pipeline.
 - v0.3.0 — baseline research.
@@ -35,7 +36,9 @@ Durations are planning estimates, not commitments. Dependencies and dataset acce
 Release tags are planned milestones, not claims of completion or clinical readiness.
 
 ## Milestone governance
+
 Every milestone must have an ID, owner, dependencies, acceptance criteria, evidence links and documentation updates. A task is not complete merely because code was written or a command ran. Failed checks and unresolved issues remain visible.
 
 ## Immediate next work
-Complete Phase 1 source verification and repository review, then proceed to Phase 2 only after Phase 1 exit criteria are met.
+
+Complete Phase 1 repository consistency review and formal approval of the project foundation. Then establish the engineering scaffold in Phase 2. Dataset acquisition and empirical audit belong to Phase 3; no model training before that audit is complete.
