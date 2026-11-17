@@ -3,14 +3,14 @@
 **Current phase:** 3 — Dataset Acquisition and Governance Audit  
 **Phase 1:** Closed; acceptance record committed.  
 **Phase 2:** Closed; WP05–WP08 merged and verified on GitHub-hosted runners.  
-**Current work package:** WP09 — Dataset governance readiness and acquisition protocol.  
+**Current work package:** WP10 — Local dataset acquisition tooling.  
 **Next gate:** Select and acquire an exact dataset release only after its terms and storage arrangements are confirmed.
 
 | Phase | Scope | Status |
 |---|---|---|
 | 1. Project establishment | Charter, objectives, requirements, architecture, governance and roadmap | Complete; accepted 2026-11-17 |
 | 2. Engineering foundation | Python package, locked environment, CI, Docker and tests | Complete; accepted 2026-11-17 |
-| 3. Dataset acquisition/audit | Source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | In progress — WP09 protocol and source review |
+| 3. Dataset acquisition/audit | Source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | In progress — WP09 merged; WP10 tooling in review |
 | 4. EDA and preprocessing | Distribution, image quality, preprocessing and split design | Not started |
 | 5. Baseline modelling | Baseline CNN and evaluation | Blocked on Phase 3 audit and split approval |
 | 6. Model investigation | Controlled architecture comparisons and ablations | Not started |
@@ -33,7 +33,7 @@ Verified evidence:
 ## Phase 3 work packages
 
 - [x] WP09 — dataset acquisition and audit protocol; version-specific source review updated.
-- [ ] WP10 — implement local dataset acquisition manifest and safe archive/inventory tooling.
+- [ ] WP10 — local manifest, SHA-256, archive safety and file inventory tooling (implementation in review).
 - [ ] WP11 — acquire one selected dataset release outside Git; record terms evidence, archive SHA-256 and immutable provenance.
 - [ ] WP12 — run image, label, metadata, duplicate and patient-group audits.
 - [ ] WP13 — review audit report and approve named dataset use; freeze patient-aware split policy.

@@ -24,7 +24,7 @@ secrets/
 data/raw/
 data/interim/
 data/processed/
-data/external/
+data/external/\ndata/manifests/\ndata/reports/
 *.sqlite
 *.db
 mlruns/
