@@ -16,8 +16,9 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - README, roadmap and development setup now reflect the verified Python engineering baseline and WP08 Docker implementation.
 ### Verified
 - GitHub-hosted Python 3.12.16 quality run: locked environment synchronisation, 15 passing unit tests, 98% statement coverage, Ruff lint/format, mypy and wheel/source distribution build.
+- WP08 PR #5 GitHub Actions run #44049716757: Python quality job and Docker non-root smoke-test job both passed. The container imported the package, loaded production settings, ran as UID 10001 and wrote to its application data directory.
 ### Pending
-- WP08 Docker CI execution, final Phase 2 acceptance and formal Phase 1 closure.
+- PR #5 review/merge and formal Phase 2 acceptance, including formal Phase 1 closure.
 - Dataset acquisition and empirical integrity/patient audit (Phase 3).
 
 ## [0.1.0] - Unreleased
