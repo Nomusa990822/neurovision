@@ -11,7 +11,7 @@ NeuroVision investigates deep learning, explainability, predictive uncertainty, 
 **Phase:** 3 — Dataset Acquisition and Governance Audit  
 **Phase 1:** Closed.  
 **Phase 2:** Closed; WP05–WP08 merged and verified.  
-**Current work package:** WP10 — local dataset acquisition tooling.
+**Current work package:** WP11 — dataset acquisition and immutable provenance.
 
 Verified engineering baseline:
 - Python 3.12 src-layout package with standard-library settings, path helpers and Python RNG seeding.
@@ -22,7 +22,7 @@ Verified engineering baseline:
 - PR #5 merged as a975754c747a1c8996d842829a0223fb98b353df after both Python quality and Docker smoke-test jobs passed.
 - All three post-merge documentation-update workflows completed successfully.
 
-**Dataset status:** No OCT data has been acquired, audited or approved, and no model has been trained. OCTDL V4 is the leading patient-grouped candidate, subject to exact archive/CSV reconciliation and governance approval. Kermany OCT2017 V3 remains conditional on terms review. See [dataset register](docs/datasets/dataset-register.md), [acquisition/audit protocol](docs/datasets/acquisition-audit-protocol.md) and [dataset tooling guide](docs/datasets/tooling.md).\n\nThe local tooling provides candidate manifest generation, SHA-256 hashing, defensive ZIP/TAR inspection and extraction, and deterministic file inventories. It does not download data, decode OCT images or approve dataset use; see the [tooling guide](docs/datasets/tooling.md).
+**Dataset status:** No OCT data has been acquired, audited or approved, and no model has been trained. OCTDL V4 is the leading patient-grouped candidate, subject to exact archive/CSV reconciliation and governance approval. Kermany OCT2017 V3 remains conditional on terms review. See [dataset register](docs/datasets/dataset-register.md), [acquisition/audit protocol](docs/datasets/acquisition-audit-protocol.md) and [dataset tooling guide](docs/datasets/tooling.md).\n\nWP10 tooling is merged and verified: candidate manifest generation, SHA-256 hashing, defensive ZIP/TAR inspection and extraction, and deterministic file inventories. It does not download data, decode OCT images or approve dataset use; see the [tooling guide](docs/datasets/tooling.md).
 
 ## Project objectives
 - Governed OCT dataset pipeline and patient-level leakage prevention.
