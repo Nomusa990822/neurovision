@@ -1,22 +1,35 @@
 # Dataset Register
 
-**Status:** Primary-source desk review completed for the three initial candidates. No dataset has been downloaded, locally audited or approved for model training. Dataset suitability remains conditional on acquisition-time verification.
+**Status:** Primary-source desk review updated 2026-11-17. No dataset has been downloaded, locally audited or approved for model training. All candidates remain conditional pending exact-release acquisition and empirical verification.
 
 ## Candidate comparison
 
 | Dataset | Published scope | Patient metadata / split evidence | Rights and source | Proposed role | Status |
 |---|---|---|---|---|---|
-| Kermany OCT2017, Mendeley V3 | Four labels: CNV, DME, DRUSEN, NORMAL. The V3 release is described as having independent-patient train/test partitions. The 2022 leakage analysis reports 108,312 training images and 1,000 test images for V3. | Filenames encode randomized patient IDs. The 2022 analysis found no patient-ID overlap for V3, but did find substantial overlap in V2. We must independently parse and audit V3. | Mendeley DOI: https://doi.org/10.17632/rscbjbr9sj.3. Page states CC BY 4.0 and also describes the image repository as for research use only. Resolve this wording/terms before use beyond non-commercial research or redistribution. | Large four-class baseline candidate. | Source identified; conditional candidate |
-| OCTDL | 2,064 images from 821 patients, seven labels: AMD, DME, ERM, NO, RAO, RVO, VID. Class counts: 1,231; 147; 155; 332; 22; 101; 76 respectively. | Published filenames encode patient IDs; CSV includes patient_id and eye. This supports group-aware partitions, subject to validating the acquired CSV against files. | Mendeley DOI: https://doi.org/10.17632/sncdhf53xc (latest version should be confirmed at acquisition). Author-associated Zenodo record: https://doi.org/10.5281/zenodo.10839556. Mendeley record states CC BY 4.0; verify exact version and file-level rights. | Patient-grouped experiments and possible cross-dataset evaluation after label harmonisation. | Strong candidate; source and metadata documented |
-| OCTID | More than 500 images; commonly reported as 572 images across NO, MH, AMD, CSR and DR. A 2018 preprint and 2020 journal article describe the database. | Patient-level identifiers and a verified official split were not established in this desk review. Do not assume that an image-level partition is patient-independent. | Paper: https://doi.org/10.1016/j.compeleceng.2019.106532. Borealis citation record: https://doi.org/10.5683/SP2/W43PFI is a citation record containing the paper PDF, not by itself proof that all image files are in that record. The record displays CC0 1.0 for its file; rights for each image collection must be checked separately. | Supplementary cross-dataset robustness study only if original image collections and rights can be verified. | Partially verified; image-source and metadata checks open |
+| Kermany OCT2017, Mendeley V3 | Four labels: CNV, DME, DRUSEN, NORMAL. The V3 record describes training and test sets of independent patients. A leakage study reports 108,312 training images and 1,000 test images for V3. | Filenames encode randomized patient IDs. The 2022 analysis found no subject-ID overlap for V3, but found 92% overlap between training and test subject IDs in V2. NeuroVision must independently parse and audit V3. | Exact record: https://doi.org/10.17632/rscbjbr9sj.3. Mendeley displays CC BY 4.0 and also states the image repository is for research use only. Record both statements; resolve applicable terms for the intended use and do not redistribute images without clear rights. | Large four-class baseline candidate, subject to rights and audit gates. | Source/version identified; conditional candidate |
+| OCTDL, Mendeley V4 | 2,064 images from 821 patients; seven labels: AMD, DME, ERM, NO, RAO, RVO, VID. Published image counts: 1,231; 147; 155; 332; 22; 101; 76 respectively. | Filenames encode patient IDs. The V4 CSV includes file_name, disease, subcategory, condition, patient_id, eye, sex, year, image_width and image_height. Reconcile CSV and filename identifiers against all acquired files. | Exact record: https://doi.org/10.17632/sncdhf53xc.4 (published 18 March 2024). Mendeley states CC BY 4.0. Archive and CSV are separately listed; capture exact downloaded hashes and terms. | Primary patient-grouped research candidate; possible cross-dataset evaluation only after cohort and label compatibility review. | Exact source/version and published metadata documented; conditional candidate |
+| OCTID | 572 images commonly reported across normal, macular hole, AMD, CSR and DR. Original work: 2018 preprint and 2020 journal article. | Patient-level identifiers and a verified official patient-independent split have not been established from the source records reviewed. Do not assume image-level partitions are patient-independent. | Paper: https://doi.org/10.1016/j.compeleceng.2019.106532. Borealis DOI https://doi.org/10.5683/SP2/W43PFI is a citation record containing the paper PDF, not the OCT image archive. Later literature points to https://dataverse.scholarsportal.info/dataverse/OCTID; verify owner, files and terms before acquisition. | Supplementary robustness/external evaluation only if source, rights, cohort independence and grouping are verified. | Image-source, licence and metadata checks open |
 
-## Important Kermany version warning
+## Source-review findings and caveats
 
-Do not refer to the commonly circulated 84,484-image OCT2017 package and the Mendeley V3 release as if they were identical. The literature distinguishes multiple releases. A 2022 analysis reported substantial patient-ID overlap in V2, but no patient-ID overlap in V3. The release version, exact archive and checksum must be pinned in every experiment. The V3 patient separation is a published finding, not a substitute for our own audit.
+### Kermany OCT2017
+
+The Mendeley V3 record describes four image classes and filenames containing randomized patient identifiers, and says the provided training and testing partitions contain independent patients. It also says the repository is made available for research use only while displaying a CC BY 4.0 licence. This wording must remain visible in the governance record; do not infer unrestricted commercial use or redistribution.
+
+Tampu et al. (2022) report 92% overlap between train and test subject IDs in Kermany V2, while their analysis found no such overlap in V3. They also show that split strategy materially affects measured performance. This reinforces the need to pin V3 and perform our own empirical audit. Do not mix V2 and V3 or treat the frequently circulated 84,484-image package as interchangeable with the V3 release.
+
+### OCTDL
+
+Pin **Version 4**, DOI **10.17632/sncdhf53xc.4**, not a mutable concept DOI or earlier release. The Mendeley V4 page lists a 380 MB ZIP and a 107 KB CSV. The associated 2024 Scientific Data paper reports 2,064 images from 821 patients and describes patient identifiers in filenames and CSV metadata. The cohort was collected in Yekaterinburg, Russia. Its class imbalance is substantial: RAO has 22 images from 11 patients, while AMD has 1,231 images from 421 patients. Patient-level counts and class counts must both be reported. A random image split would be unacceptable.
+
+### OCTID
+
+The Borealis citation record is not the image dataset itself. A later paper points to a Dataverse OCTID collection, but the actual file inventory, data owner, access terms, patient metadata and version have not yet been verified. Do not download a similarly named Kaggle or third-party mirror as a substitute without tracing it to the original source.
 
 ## External evaluation policy
 
 OCTDL and OCTID are not automatically approved as external test sets simply because they are different named datasets. Before external evaluation:
+
 1. Confirm distinct source cohort and no known shared images/patients with training data.
 2. Freeze the model and evaluation protocol before examining external test outcomes.
 3. Define a clinically defensible common label ontology. Do not equate AMD with drusen or CNV without explicit justification.
@@ -27,10 +40,13 @@ A broad normal-versus-abnormal task may be investigated as a separate prespecifi
 
 ## Primary references
 
-- Kermany et al. (2018), *Identifying Medical Diagnoses and Treatable Diseases by Image-Based Deep Learning*, Cell 172(5), 1122–1131. DOI: https://doi.org/10.1016/j.cell.2018.02.010. Dataset release V3: https://doi.org/10.17632/rscbjbr9sj.3.
-- Tampu, Eklund & Haj-Hosseini (2022), *Inflation of test accuracy due to data leakage in deep learning-based classification of OCT images*, Scientific Data 9, 580. DOI: https://doi.org/10.1038/s41597-022-01618-6.
-- Kulyabin et al. (2024), *OCTDL: Optical Coherence Tomography Dataset for Image-Based Deep Learning Methods*, Scientific Data 11, 365. DOI: https://doi.org/10.1038/s41597-024-03182-7. Dataset record: https://doi.org/10.17632/sncdhf53xc.
-- Gholami et al. (2020), *OCTID: Optical coherence tomography image database*, Computers & Electrical Engineering 81, 106532. DOI: https://doi.org/10.1016/j.compeleceng.2019.106532. Preprint: https://arxiv.org/abs/1812.07056.
+- Kermany et al. (2018), *Identifying Medical Diagnoses and Treatable Diseases by Image-Based Deep Learning*, Cell 172(5), 1122–1131. DOI: https://doi.org/10.1016/j.cell.2018.02.010.
+- Kermany OCT2017 Mendeley V3: https://doi.org/10.17632/rscbjbr9sj.3.
+- Tampu, Eklund & Haj-Hajji (2022), *Inflation of test accuracy due to data leakage in deep learning-based classification of OCT images*, Scientific Data 9, 580. DOI: https://doi.org/10.1038/s41597-022-01618-6.
+- Kulyabin et al. (2024), *OCTDL: Optical Coherence Tomography Dataset for Image-Based Deep Learning Methods*, Scientific Data 11, 365. DOI: https://doi.org/10.1038/s41597-024-03182-7.
+- OCTDL Mendeley V4: https://doi.org/10.17632/sncdhf53xc.4.
+- Gholami et al. (2020), *OCTID: Optical coherence tomography image database*, Computers & Electrical Engineering 81, 106532. DOI: https://doi.org/10.1016/j.compeleceng.2019.106532.
+- OCTID Dataverse collection reference (not yet verified for file content/terms): https://dataverse.scholarsportal.info/dataverse/OCTID.
 
 ## Acquisition gates
 
@@ -46,7 +62,8 @@ A broad normal-versus-abnormal task may be investigated as a separate prespecifi
 ## Dataset status vocabulary
 
 - Candidate: identified but not verified.
-- Source verified: original source and applicable terms checked.
+- Source/version reviewed: exact source record and published metadata inspected; licence interpretation or empirical checks may remain open.
+- Source verified: original source and applicable terms checked for the intended use.
 - Acquired: files downloaded and checksummed.
 - Audited: integrity, metadata, labels and grouping inspected.
 - Approved for specified use: governance review completed for that use.
