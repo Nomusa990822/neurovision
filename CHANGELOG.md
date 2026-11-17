@@ -8,17 +8,18 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - Dataset source desk review and patient-level leakage safeguards.
 - Apache License 2.0 for original NeuroVision project materials.
 - Phase 2 engineering specification and ADR-020.
-- Initial Python src-layout package scaffold, environment-backed settings, path helpers, Python RNG seeding and focused unit tests.
-- Committed Python 3.12 uv lockfile and read-only GitHub Actions quality workflow.
-- Non-root Docker runtime baseline, build-context exclusions, Docker operating guide and ADR-021.
+- Python package scaffold, settings, path helpers, RNG helper and unit tests.
+- Committed Python 3.12 uv lockfile and GitHub Actions quality workflow.
+- Non-root Docker runtime, build-context exclusions, Docker guide and ADR-021.
 - GitHub Actions Docker build and container smoke-test job.
 ### Changed
-- README, roadmap and development setup now reflect the verified Python engineering baseline and WP08 Docker implementation.
+- README and roadmap updated for merged WP08 implementation and next-phase status.
 ### Verified
-- GitHub-hosted Python 3.12.16 quality run: locked environment synchronisation, 15 passing unit tests, 98% statement coverage, Ruff lint/format, mypy and wheel/source distribution build.
-- WP08 PR #5 GitHub Actions run #44049716757: Python quality job and Docker non-root smoke-test job both passed. The container imported the package, loaded production settings, ran as UID 10001 and wrote to its application data directory.
+- Python 3.12 quality run: 15 passing unit tests, 98% statement coverage, Ruff, mypy and package build.
+- WP08 PR #5 run #44049962338: Python quality and Docker smoke-test jobs both passed; container verified as UID 10001 with writable application data directory.
+- PR #5 merged to main as a975754c747a1c8996d842829a0223fb98b353df.
 ### Pending
-- PR #5 review/merge and formal Phase 2 acceptance, including formal Phase 1 closure.
+- Post-merge main integration workflow and formal Phase 1/2 acceptance record.
 - Dataset acquisition and empirical integrity/patient audit (Phase 3).
 
 ## [0.1.0] - Unreleased
