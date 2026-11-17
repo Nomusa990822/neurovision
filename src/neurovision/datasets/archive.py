@@ -18,8 +18,10 @@ class ArchiveMember:
 def _safe_relative_name(name: str) -> PurePosixPath:
     normalized = name.replace("\\", "/")
     candidate = PurePosixPath(normalized)
-    if candidate.is_absolute() or not candidate.parts or any(
-        part in {"", ".", ".."} for part in candidate.parts
+    if (
+        candidate.is_absolute()
+        or not candidate.parts
+        or any(part in {"", ".", ".."} for part in candidate.parts)
     ):
         raise ValueError(f"Unsafe archive member path: {name!r}")
     if candidate.parts[0].endswith(":"):
