@@ -10,7 +10,7 @@
 |---|---|---|
 | 1. Project establishment | Charter, objectives, requirements, architecture, governance and roadmap | Complete; accepted 2026-11-17 |
 | 2. Engineering foundation | Python package, locked environment, CI, Docker and tests | Complete; accepted 2026-11-17 |
-| 3. Dataset acquisition/audit | Source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | In progress — WP09 protocol and source review |
+| 3. Dataset acquisition/audit | Source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | In progress — WP09 merged; WP10 tooling in review |
 | 4. EDA and preprocessing | Distribution, image quality, preprocessing and split design | Not started |
 | 5. Baseline modelling | Baseline CNN and evaluation | Blocked on Phase 3 audit and split approval |
 | 6. Model investigation | Controlled architecture comparisons and ablations | Not started |
