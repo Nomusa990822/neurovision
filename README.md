@@ -30,7 +30,7 @@ NeuroVision is a research and engineering project investigating how deep learnin
 | Quality | Pytest, Ruff, mypy |
 | Deployment / CI | Docker / GitHub Actions |
 
-See the [Phase 2 engineering specification](docs/engineering/phase-2-specification.md) and [development setup](docs/engineering/development-setup.md).
+See the [Phase 2 engineering specification](docs/engineering/phase-2-specification.md), [development setup](docs/engineering/development-setup.md) and [Docker guide](docs/engineering/docker.md).
 
 ## Repository structure
 
@@ -45,14 +45,15 @@ See the [Phase 2 engineering specification](docs/engineering/phase-2-specificati
 **Phase:** 2 — Engineering Foundation  
 **Current work package:** WP08 — Docker baseline and final Phase 2 acceptance
 
-**Verified engineering baseline (WP06–WP07):**
+**Verified engineering baseline (WP06–WP08):**
 - Python 3.12 src-layout package, immutable standard-library settings, path helpers and Python RNG seeding.
-- Committed `uv.lock` generated on a GitHub-hosted Python 3.12.16 runner.
-- Read-only GitHub Actions quality workflow with locked dependency verification.
+- Committed `uv.lock` generated and verified on GitHub-hosted Python 3.12 runners.
+- GitHub Actions quality workflow with locked dependency verification, tests, Ruff, mypy and package builds.
 - 15 unit tests passed; 98% statement coverage in the verified run.
-- Ruff lint and formatting, mypy, locked environment installation, and wheel/source distribution build all passed.
+- Non-root Docker runtime baseline with a CI smoke test for package import, production settings, UID 10001 and writable application data directory.
+- WP08 PR #5 passed both Python quality and Docker smoke-test jobs on its current head.
 
-**Still pending:** non-root Docker baseline and container smoke test, final Phase 2 documentation/acceptance review, and formal Phase 1 closure. No OCT data has been acquired and no model has been trained. Dataset acquisition and empirical patient/integrity audit remain Phase 3 work.
+**Still pending:** PR #5 review/merge and formal Phase 2 acceptance record, including formal Phase 1 closure. No OCT data has been acquired and no model has been trained. Dataset acquisition and empirical patient/integrity audit remain Phase 3 work.
 
 See the [roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repository audit](docs/architecture/repository-audit.md), [decision register](docs/decisions.md) and [risk register](docs/risk-register.md).
 

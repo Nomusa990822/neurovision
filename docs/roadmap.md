@@ -2,14 +2,14 @@
 
 **Current phase:** 2 — Engineering Foundation  
 **Current work package:** WP08 — Docker baseline and final Phase 2 acceptance  
-**Status:** WP05–WP07 are complete. The Python package, committed lockfile and read-only GitHub Actions quality workflow are verified. Docker baseline and final engineering acceptance remain outstanding. Phase 1 formal closure is still to be recorded.
+**Status:** WP05–WP07 are complete. WP08 implementation and both hosted CI jobs passed on PR #5. PR review/merge and formal acceptance remain. Phase 1 formal closure is still to be recorded.
 
 Durations are planning estimates, not commitments. Dependencies and dataset access may change.
 
 | Phase | Scope | Exit evidence | Status |
 |---|---|---|---|
 | 1. Project establishment | Charter, objectives, requirements, architecture, governance, roadmap, source verification | Approved documents and formal sign-off | Documentation complete; formal closure pending |
-| 2. Engineering foundation | Python package, locked environment, CI, Docker, tests, logging | Clean setup, passing CI and documented commands | In progress — Docker and final acceptance remain |
+| 2. Engineering foundation | Python package, locked environment, CI, Docker, tests, logging | Clean setup, passing CI and documented commands | In progress — WP08 PR passed CI; final acceptance pending |
 | 3. Dataset acquisition/audit | Exact source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | Dataset register, manifests, audit report and purpose-specific approval | Not started |
 | 4. EDA and preprocessing | Distribution, image quality, preprocessing and split design | Reproducible pipeline and leakage tests | Not started |
 | 5. Baseline modelling | Baseline CNN and evaluation | Reproducible baseline report and checkpoint | Not started |
@@ -41,12 +41,14 @@ Durations are planning estimates, not commitments. Dependencies and dataset acce
 - [x] WP05 — engineering specification and ADR-020.
 - [x] WP06 — Python package scaffold, settings, utilities and unit tests; merged in PR #4.
 - [x] WP07 — Python 3.12 lockfile, Ruff/mypy/pytest and GitHub Actions quality workflow; verified in PR #4.
-- [ ] WP08 — non-root Docker baseline, container smoke test and engineering documentation sign-off.
+- [x] WP08 — non-root Docker baseline and CI smoke test; both CI jobs passed on PR #5. Review/merge and formal acceptance record pending.
 
 ## Phase 2 acceptance gate
 
 Verified in GitHub Actions on the merged PR #4: locked dependency verification and installation, package import/build, 15 passing unit tests, 98% statement coverage, Ruff lint and formatting, mypy, and wheel/source distribution build.
 
-Still required before Phase 2 closure: non-root Docker image build and smoke test, final documentation review and formal acceptance record. Missing, skipped or cancelled checks do not count as passing.
+WP08 verification passed on PR #5 (run [#44049716757](https://github.com/Nomusa990822/neurovision/actions/runs/44049716757)): the Python quality job and Docker job both succeeded. The Docker job built the image and verified package import, production settings, unprivileged UID 10001 and write access to the configured application data directory.
+
+Remaining Phase 2 work is PR #5 review/merge and a formal acceptance record. Missing, skipped or cancelled checks do not count as passing.
 
 Dataset acquisition and empirical patient/integrity audit belong to Phase 3. Model training must not begin before the dataset audit and split policy are approved.

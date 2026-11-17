@@ -1,12 +1,13 @@
 # NeuroVision Development Setup
 
-The Python 3.12 development environment is locked and verified by the GitHub Actions workflow at `.github/workflows/python-quality.yml`.
+The Python 3.12 development environment is locked and verified by the GitHub Actions workflow at `.github/workflows/python-quality.yml`. Docker provides a separate non-root runtime baseline; see [Docker documentation](docker.md).
 
 ## Requirements
 
 - Python 3.12.
 - uv.
 - Git.
+- Docker Engine (only for container build/run workflows).
 
 ## Create or synchronise the environment
 
@@ -30,7 +31,16 @@ uv run mypy
 uv build
 ```
 
-These checks run on GitHub-hosted Ubuntu runners for pull requests and pushes to `main`. The workflow uses Python 3.12, verifies the committed lockfile, installs the locked environment, runs the test and quality gates, and builds both wheel and source distributions.
+These checks run on GitHub-hosted Ubuntu runners for pull requests and pushes to `main`. The workflow uses Python 3.12, verifies the committed lockfile, installs the locked environment, runs the test and quality gates, and builds both wheel and source distributions. A dependent job builds and smoke-tests the Docker runtime.
+
+## Docker
+
+```bash
+docker build --pull --tag neurovision:0.1.0 .
+docker run --rm neurovision:0.1.0
+```
+
+The image uses the locked runtime dependency graph, runs as UID 10001 and does not include development tools or OCT data. See [Docker baseline details](docker.md), including the non-root and writable-data verification command.
 
 ## Configuration
 
@@ -48,4 +58,4 @@ Do not place secrets, patient identifiers or private dataset paths in `.env.exam
 
 The initial package contains package metadata, immutable settings implemented with standard-library dataclasses, path resolution and a Python random-seed helper. It does not yet implement dataset ingestion, image processing, models, training, calibration, explainability, uncertainty estimation, API routes or database access.
 
-The Docker baseline is still pending and will be delivered under WP08.
+The Docker image is a package-runtime smoke-test baseline, not a long-running service or a production deployment.
