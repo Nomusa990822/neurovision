@@ -93,7 +93,9 @@ def safe_extract_archive(
                     while chunk := source.read(1024 * 1024):
                         extracted_bytes += len(chunk)
                         if extracted_bytes > max_total_bytes:
-                            raise ValueError(\n                                "Archive exceeds maximum uncompressed size while extracting"\n                            )
+                            raise ValueError(
+                                "Archive exceeds maximum uncompressed size while extracting"
+                            )
                         output.write(chunk)
     else:
         with tarfile.open(archive_path, "r:*") as archive:
@@ -116,6 +118,8 @@ def safe_extract_archive(
                     while chunk := source.read(1024 * 1024):
                         extracted_bytes += len(chunk)
                         if extracted_bytes > max_total_bytes:
-                            raise ValueError("Archive exceeds maximum uncompressed size while extracting")
+                            raise ValueError(
+                                "Archive exceeds maximum uncompressed size while extracting"
+                            )
                         output.write(chunk)
     return len(files)
