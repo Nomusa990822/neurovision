@@ -1,14 +1,14 @@
 # NeuroVision Development Roadmap
 
 **Current phase:** Phase 1 — Project Establishment  
-**Status:** Foundation documentation and dataset source desk review recorded. Repository audit completed; Phase 1 remains open pending governance decisions and formal sign-off.
+**Status:** Foundation documentation, dataset source desk review, repository audit and governance decisions recorded. Phase 1 remains open pending review of the Phase 2 scaffold specification and formal sign-off.
 
-Durations are planning estimates, not commitments. Dependencies and dataset access may change the schedule.
+Durations are planning estimates, not commitments. Dependencies and dataset access may change.
 
 | Phase | Scope | Exit evidence | Status |
 |---|---|---|---|
-| 1. Project establishment | Charter, objectives, requirements, architecture, governance, roadmap, source verification | Approved documents, verified repository baseline and signed-off Phase 1 review | In progress |
-| 2. Engineering foundation | Python package, pinned environment, CI, Docker, tests, logging | Clean setup, passing CI and documented commands | Proposed |
+| 1. Project establishment | Charter, objectives, requirements, architecture, governance, roadmap, source verification | Approved documents, verified repository baseline and signed-off Phase 1 review | In progress — sign-off pending |
+| 2. Engineering foundation | Python package, pinned environment, CI, Docker, tests, logging | Clean setup, passing CI and documented commands | Proposed — specification drafted |
 | 3. Dataset acquisition/audit | Exact source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | Dataset register, manifests, audit report and purpose-specific approval | Proposed |
 | 4. EDA and preprocessing | Distribution, image quality, preprocessing and split design | Reproducible pipeline and leakage tests | Proposed |
 | 5. Baseline modelling | Baseline CNN and evaluation | Reproducible baseline report and checkpoint | Proposed |
@@ -48,11 +48,14 @@ Every milestone must have an ID, owner, dependencies, acceptance criteria, evide
 - [x] Dataset governance and patient-leakage controls documented.
 - [x] Evaluation and reproducibility strategy documented.
 - [x] Repository contents and missing engineering scaffold audited.
-- [x] Confirm project software licence: Apache-2.0; canonical LICENSE added.
-- [x] Select initial data strategy: local-first; shared DVC remote deferred.
+- [x] Project software licence selected: Apache-2.0; canonical LICENSE added.
+- [x] Initial data strategy selected: local-first; shared DVC remote deferred.
+- [x] Phase 2 engineering specification drafted (WP05); approval pending.
 - [ ] Review and approve the Phase 2 scaffold plan.
 - [ ] Final Phase 1 sign-off.
 
-## Immediate next work
+## Phase 2 entry baseline
 
-Complete Phase 1 repository consistency review and formal approval of the project foundation. Then establish the engineering scaffold in Phase 2. Dataset acquisition and empirical audit belong to Phase 3; no model training before that audit is complete.
+WP05 defines the proposed runtime, dependency manager, package boundaries, configuration policy, quality tooling, CI workflow, Docker baseline and acceptance criteria in [the Phase 2 engineering specification](engineering/phase-2-specification.md). The associated toolchain decision is recorded in [ADR-020](architecture/adr/ADR-020-phase-2-toolchain.md).
+
+No Phase 2 implementation is considered complete until its acceptance evidence is produced. Dataset acquisition and empirical audit belong to Phase 3; no model training before that audit is complete.
