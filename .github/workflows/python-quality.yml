@@ -37,6 +37,9 @@ jobs:
         run: uv run ruff check .
       - name: Verify Ruff formatting
         run: uv run ruff format --check .
+      - name: Show Ruff formatting diff (temporary diagnostic)
+        if: always()
+        run: uv run ruff format --diff src/neurovision/datasets/archive.py
       - name: Run mypy
         run: uv run mypy
       - name: Build wheel and source distribution
