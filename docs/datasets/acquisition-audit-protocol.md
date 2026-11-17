@@ -1,7 +1,7 @@
 # Dataset Acquisition and Audit Protocol
 
 **Phase:** 3 — Dataset Acquisition and Governance Audit  
-**Status:** Protocol defined; no dataset acquired or approved  
+**Status:** Protocol defined; OCTDL V4 acquisition reported by owner but not independently verified  
 **Applies to:** OCT image datasets and all derived manifests
 
 ## 1. Purpose and entry criteria
@@ -56,7 +56,7 @@ Create one manifest record per acquired dataset release. Required fields:
 | patient_id_available | Boolean/unknown |
 | eye_id_available | Boolean/unknown |
 | scanner_site_metadata | Available scanner/site fields or `not reported` |
-| acquisition_status | Candidate/source_verified/acquired/audited/approved |
+| acquisition_status | candidate/source_verified/acquired/audited/approved |
 | intended_use | Explicit approved or proposed use |
 | limitations | Known caveats and unresolved questions |
 
@@ -135,6 +135,7 @@ The audit report must include expected versus observed counts, corrupt-file coun
 - Reconcile filename-encoded patient IDs against CSV patient IDs.
 - Report image and patient counts by class, and assess rare classes before defining any task.
 - The published cohort is from Yekaterinburg, Russia; do not claim broad geographic or device generalisability from this cohort alone.
+- Track owner-reported acquisition separately from independently verified archive access, hashes and integrity results. See [OCTDL V4 acquisition record](acquisition-record-octdl-v4.md).
 
 ### OCTID
 
@@ -157,12 +158,16 @@ A dataset approved for model development is not automatically approved for exter
 
 ## 10. Current project state
 
-As of protocol adoption:
-- No OCT dataset has been downloaded into the NeuroVision data zones.
-- No archive hash or empirical file inventory exists.
+As of 2026-11-17:
+- The project owner reports downloading OCTDL V4's `OCTDL.zip` and `OCTDL_labels.csv` and storing them in the project's Google Drive dataset folder.
+- The current project workspace cannot independently access those Drive files or the earlier conversation attachments.
+- No archive/CSV byte sizes or SHA-256 hashes have been independently recorded.
+- No archive CRC/integrity result or extracted image inventory exists.
 - No patient-level split has been created or approved.
 - No dataset is approved for training or external evaluation.
 - No model training is authorised.
+
+See [OCTDL V4 acquisition record](acquisition-record-octdl-v4.md) for the evidence ledger and outstanding checks.
 
 ## 11. Primary references
 
