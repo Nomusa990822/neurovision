@@ -6,9 +6,11 @@ All notable project changes are recorded here. This project follows a pragmatic 
 ### Added
 - Initial NeuroVision project overview and research scope.
 - Phase 1 foundation documentation.
+- Primary-source desk review of Kermany OCT2017, OCTDL and OCTID candidate datasets.
+- Dataset versioning, licensing-scope and patient-level leakage controls in governance documentation.
 ### Pending
 - Repository engineering scaffold, CI and reproducible environment (Phase 2).
-- Dataset acquisition and integrity verification (Phase 3).
+- Dataset acquisition, checksum verification and empirical integrity/patient audit (Phase 3).
 
 ## [0.1.0] - Unreleased
 Initial planned engineering-foundation milestone. This version must not be tagged until its acceptance criteria are verified.
