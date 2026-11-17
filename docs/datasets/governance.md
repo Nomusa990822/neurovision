@@ -38,6 +38,14 @@ Compute SHA-256 hashes; validate decoding, dimensions and formats; identify exac
 
 Minimise data collection and retention. Restrict access to sensitive data. Do not commit patient data, identifiers, credentials or private storage locations. Avoid logging images or identifiers. Apply encryption and access controls appropriate to the storage environment.
 
+## Storage and versioning strategy
+
+The initial strategy is local-first. Raw archives remain outside Git and are immutable. Git tracks source code, documentation, non-sensitive manifests and DVC metadata. No shared DVC remote is configured or assumed at this stage. A remote may be selected only after documenting cost, encryption, access control, backup, retention, data residency and compatibility with the relevant dataset terms. A local-only DVC setup is not a backup or shared collaboration mechanism.
+
+## Software and dataset licensing boundary
+
+The NeuroVision software is licensed under Apache License 2.0. That licence applies only to original project-authored material that NeuroVision has the right to license. It does not grant rights to OCT datasets, images, annotations, third-party code, pretrained weights, fonts or other assets. Record and comply with the licence and terms for each external component independently.
+
 ## Redistribution
 
 Dataset licences are independent of the NeuroVision software licence. Do not publish raw OCT images, archives or derived data unless redistribution rights are explicitly established for those specific files. Public manifests must not reveal sensitive identifiers or enable re-identification.
