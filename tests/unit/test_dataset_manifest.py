@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from neurovision.datasets.manifest import create_manifest_template, validate_manifest, write_manifest
+from neurovision.datasets.manifest import (\n    create_manifest_template,\n    validate_manifest,\n    write_manifest,\n)
 
 
 def test_template_is_candidate_and_unacquired() -> None:
