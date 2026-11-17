@@ -8,9 +8,10 @@ NeuroVision investigates deep learning, explainability, predictive uncertainty, 
 
 ## Current status
 
-**Phase:** 2 — Engineering Foundation
-**WP05–WP08:** implementation merged.
-**Next:** Phase 3 — Dataset acquisition and audit.
+**Phase:** 3 — Dataset Acquisition and Governance Audit  
+**Phase 1:** Closed.  
+**Phase 2:** Closed; WP05–WP08 merged and verified.  
+**Current work package:** WP09 — dataset governance readiness and acquisition protocol.
 
 Verified engineering baseline:
 - Python 3.12 src-layout package with standard-library settings, path helpers and Python RNG seeding.
@@ -19,10 +20,9 @@ Verified engineering baseline:
 - Ruff lint/format, mypy and package build passed.
 - Non-root Docker image (UID 10001) built and smoke-tested, including production settings and writable data directory.
 - PR #5 merged as a975754c747a1c8996d842829a0223fb98b353df after both Python quality and Docker smoke-test jobs passed.
+- All three post-merge documentation-update workflows completed successfully.
 
-**Final integration check:** the post-merge main-branch workflow is still the final gate before formal Phase 1/2 sign-off.
-
-**Dataset status:** No OCT data has been acquired and no model has been trained. Dataset acquisition, licence verification, integrity checks and empirical patient-level audit remain Phase 3 work.
+**Dataset status:** No OCT data has been acquired, audited or approved, and no model has been trained. OCTDL V4 is the leading patient-grouped candidate, subject to exact archive/CSV reconciliation and governance approval. Kermany OCT2017 V3 remains conditional on terms review. See [dataset register](docs/datasets/dataset-register.md) and [acquisition/audit protocol](docs/datasets/acquisition-audit-protocol.md).
 
 ## Project objectives
 - Governed OCT dataset pipeline and patient-level leakage prevention.
@@ -44,7 +44,7 @@ Verified engineering baseline:
 | Quality | Pytest, Ruff, mypy |
 | Deployment / CI | Docker / GitHub Actions |
 
-See docs/engineering/phase-2-specification.md, docs/engineering/development-setup.md, docs/engineering/docker.md and docs/roadmap.md.
+See [engineering specification](docs/engineering/phase-2-specification.md), [development setup](docs/engineering/development-setup.md), [Docker guide](docs/engineering/docker.md) and [roadmap](docs/roadmap.md).
 
 ## Scientific integrity
 - Preserve original datasets and record provenance, licence and acquisition details.
@@ -55,6 +55,7 @@ See docs/engineering/phase-2-specification.md, docs/engineering/development-setu
 - Treat heatmaps as investigation tools, not proof of model reasoning.
 - Record negative, inconclusive and failed experiments.
 - Do not fabricate results or imply clinical validation.
+- Do not begin model training before the dataset audit and split policy are approved.
 
 ## Licence
 Original NeuroVision software and project-authored materials are licensed under Apache License 2.0. Third-party code, datasets, OCT images, annotations, pretrained weights and other assets remain subject to their own licences and terms.
