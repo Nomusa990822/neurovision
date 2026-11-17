@@ -57,7 +57,7 @@ def validate_manifest(manifest: dict[str, Any]) -> list[str]:
         errors.append("acquisition_status must be one of: " + ", ".join(sorted(VALID_STATUSES)))
     for key in ("archive_bytes", "extracted_file_count"):
         value = manifest.get(key)
-        if value is not None and (not isinstance(value, int) or isinstance(value, bool) or value < 0):
+        if value is not None and (\n            not isinstance(value, int) or isinstance(value, bool) or value < 0\n        ):
             errors.append(f"{key} must be a non-negative integer or null")
     digest = manifest.get("archive_sha256")
     if digest is not None and (
