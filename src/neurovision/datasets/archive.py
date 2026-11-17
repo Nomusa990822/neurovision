@@ -55,9 +55,7 @@ def inspect_archive(path: Path) -> list[ArchiveMember]:
                     _safe_relative_name(name)
                 if not (tar_member.isfile() or tar_member.isdir()):
                     raise ValueError(f"Special TAR members are not allowed: {tar_member.name}")
-                members.append(
-                    ArchiveMember(tar_member.name, tar_member.size, tar_member.isdir())
-                )
+                members.append(ArchiveMember(tar_member.name, tar_member.size, tar_member.isdir()))
         return members
     raise ValueError(f"Unsupported or invalid archive: {path}")
 
@@ -92,9 +90,7 @@ def safe_extract_archive(
                     continue
                 target = (root / Path(*_safe_relative_name(name).parts)).resolve()
                 if root not in target.parents and target != root:
-                    raise ValueError(
-                        f"Archive member escapes destination: {zip_member.filename}"
-                    )
+                    raise ValueError(f"Archive member escapes destination: {zip_member.filename}")
                 if zip_member.is_dir():
                     target.mkdir(parents=True, exist_ok=True)
                     continue
