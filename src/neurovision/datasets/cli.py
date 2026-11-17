@@ -8,7 +8,12 @@ from pathlib import Path
 from typing import Sequence
 
 from neurovision.datasets.archive import inspect_archive, safe_extract_archive
-from neurovision.datasets.audit import inventory_files, sha256_file, write_inventory_csv, write_inventory_json
+from neurovision.datasets.audit import (
+    inventory_files,
+    sha256_file,
+    write_inventory_csv,
+    write_inventory_json,
+)
 from neurovision.datasets.manifest import create_manifest_template, write_manifest
 
 
@@ -16,7 +21,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="neurovision-datasets")
     commands = parser.add_subparsers(dest="command", required=True)
 
-    manifest = commands.add_parser("manifest-template", help="Create an unapproved dataset manifest template")
+    manifest = commands.add_parser(
+        "manifest-template", help="Create an unapproved dataset manifest template"
+    )
     manifest.add_argument("--dataset-id", required=True)
     manifest.add_argument("--title", required=True)
     manifest.add_argument("--output", type=Path, required=True)
@@ -24,7 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
     digest = commands.add_parser("hash", help="Calculate SHA-256 for a local file")
     digest.add_argument("file", type=Path)
 
-    inspect = commands.add_parser("inspect-archive", help="Inspect archive paths and uncompressed sizes")
+    inspect = commands.add_parser("inspect-archive", help="Inspect archive paths and sizes")
     inspect.add_argument("archive", type=Path)
 
     extract = commands.add_parser("extract", help="Safely extract a ZIP/TAR archive")
@@ -50,13 +57,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"{sha256_file(args.file)}  {args.file}")
     elif args.command == "inspect-archive":
         members = inspect_archive(args.archive)
-        print(json.dumps([member.__dict__ if hasattr(member, "__dict__") else {
-            "name": member.name, "size_bytes": member.size_bytes, "is_directory": member.is_directory
-        } for member in members], indent=2))
+        payload = [
+            {"name": item.name, "size_bytes": item.size_bytes, "is_directory": item.is_directory}
+            for item in members
+        ]
+        print(json.dumps(payload, indent=2))
     elif args.command == "extract":
         count = safe_extract_archive(
-            args.archive, args.destination,
-            max_members=args.max_members, max_total_bytes=args.max_total_bytes,
+            args.archive,
+            args.destination,
+            max_members=args.max_members,
+            max_total_bytes=args.max_total_bytes,
         )
         print(f"Extracted {count} files to {args.destination}")
     elif args.command == "inventory":
