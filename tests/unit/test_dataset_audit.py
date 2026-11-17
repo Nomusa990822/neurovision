@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import hashlib
 
-from neurovision.datasets.audit import (\n    inventory_files,\n    sha256_file,\n    write_inventory_csv,\n    write_inventory_json,\n)
+from neurovision.datasets.audit import (
+    inventory_files,
+    sha256_file,
+    write_inventory_csv,
+    write_inventory_json,
+)
 
 
 def test_sha256_file_matches_known_digest(tmp_path) -> None:
