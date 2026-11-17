@@ -14,6 +14,7 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - GitHub Actions Docker build and container smoke-test job.
 - Formal Phase 1/2 acceptance record.
 - Phase 3 dataset acquisition and audit protocol.
+- Local dataset manifest, SHA-256, archive inspection/extraction, inventory CLI and synthetic tests (WP10; pending merge).
 
 ### Changed
 - Dataset register now pins OCTDL Mendeley Version 4 and records the Kermany V3 terms ambiguity and OCTID source limitations.
@@ -26,6 +27,7 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - Post-merge main workflows #44050377840, #44050384243 and #44050390407 all completed successfully.
 
 ### Pending
+- WP10 CI and review.
 - Select and acquire a version-pinned OCT dataset under verified terms.
 - Empirical image integrity, label, metadata, duplicate and patient-group audit (Phase 3).
 - Purpose-specific dataset approval and patient-aware split policy.
