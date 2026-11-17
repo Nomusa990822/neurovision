@@ -3,7 +3,7 @@
 **Current phase:** 3 — Dataset Acquisition and Governance Audit  
 **Phase 1:** Closed; acceptance record committed.  
 **Phase 2:** Closed; WP05–WP08 merged and verified on GitHub-hosted runners.  
-**Current work package:** WP09 — Dataset governance readiness and acquisition protocol.  
+**Current work package:** WP10 — Local dataset acquisition tooling.  
 **Next gate:** Select and acquire an exact dataset release only after its terms and storage arrangements are confirmed.
 
 | Phase | Scope | Status |
@@ -33,7 +33,7 @@ Verified evidence:
 ## Phase 3 work packages
 
 - [x] WP09 — dataset acquisition and audit protocol; version-specific source review updated.
-- [ ] WP10 — implement local dataset acquisition manifest and safe archive/inventory tooling.
+- [ ] WP10 — local manifest, SHA-256, archive safety and file inventory tooling (implementation in review).
 - [ ] WP11 — acquire one selected dataset release outside Git; record terms evidence, archive SHA-256 and immutable provenance.
 - [ ] WP12 — run image, label, metadata, duplicate and patient-group audits.
 - [ ] WP13 — review audit report and approve named dataset use; freeze patient-aware split policy.
