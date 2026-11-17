@@ -35,18 +35,28 @@ jobs:
         run: uv run pytest --cov=neurovision --cov-report=term-missing
       - name: Run Ruff lint
         run: uv run ruff check .
-      - name: Verify Ruff formatting
-        run: uv run ruff format --check .
       - name: Run mypy
         run: uv run mypy
       - name: Build wheel and source distribution
         run: uv build
+      - name: Capture Ruff formatting diff for review
+        run: uv run ruff format --diff . > ruff-format.diff || true
+      - name: Verify Ruff formatting
+        run: uv run ruff format --check .
       - name: Upload generated dependency lock
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: neurovision-uv-lock
           path: uv.lock
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Upload Ruff formatting diff
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: neurovision-ruff-format-diff
+          path: ruff-format.diff
           if-no-files-found: ignore
           retention-days: 7
       - name: Upload package distributions
