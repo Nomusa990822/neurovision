@@ -38,9 +38,7 @@ def inventory_files(root: Path, *, exclude_names: set[str] | None = None) -> lis
     excluded = exclude_names or set()
     records: list[FileRecord] = []
     for path in sorted(resolved_root.rglob("*")):
-        if path.is_symlink():
-            continue
-        if not path.is_file() or path.name in excluded:
+        if path.is_symlink() or not path.is_file() or path.name in excluded:
             continue
         records.append(
             FileRecord(
@@ -56,9 +54,9 @@ def inventory_files(root: Path, *, exclude_names: set[str] | None = None) -> lis
 def write_inventory_json(path: Path, records: list[FileRecord]) -> None:
     """Write inventory JSON; refuse to overwrite an existing report."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("x", encoding="utf-8", newline="\\n") as handle:
+    with path.open("x", encoding="utf-8", newline="\n") as handle:
         json.dump([asdict(record) for record in records], handle, indent=2)
-        handle.write("\\n")
+        handle.write("\n")
 
 
 def write_inventory_csv(path: Path, records: list[FileRecord]) -> None:
