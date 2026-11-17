@@ -48,8 +48,8 @@ Every milestone must have an ID, owner, dependencies, acceptance criteria, evide
 - [x] Dataset governance and patient-leakage controls documented.
 - [x] Evaluation and reproducibility strategy documented.
 - [x] Repository contents and missing engineering scaffold audited.
-- [ ] Confirm project software licence.
-- [ ] Confirm data storage and DVC remote strategy.
+- [x] Confirm project software licence: Apache-2.0; canonical LICENSE added.
+- [x] Select initial data strategy: local-first; shared DVC remote deferred.
 - [ ] Review and approve the Phase 2 scaffold plan.
 - [ ] Final Phase 1 sign-off.
 
