@@ -34,24 +34,30 @@ def inspect_archive(path: Path) -> list[ArchiveMember]:
     members: list[ArchiveMember] = []
     if zipfile.is_zipfile(path):
         with zipfile.ZipFile(path) as archive:
-            for item in archive.infolist():
-                name = item.filename.rstrip("/")
+            for zip_member in archive.infolist():
+                name = zip_member.filename.rstrip("/")
                 if name:
                     _safe_relative_name(name)
-                mode = (item.external_attr >> 16) & 0o170000
+                mode = (zip_member.external_attr >> 16) & 0o170000
                 if mode == 0o120000:
-                    raise ValueError(f"Symbolic links are not allowed in archives: {item.filename}")
-                members.append(ArchiveMember(item.filename, item.file_size, item.is_dir()))
+                    raise ValueError(
+                        f"Symbolic links are not allowed in archives: {zip_member.filename}"
+                    )
+                members.append(
+                    ArchiveMember(zip_member.filename, zip_member.file_size, zip_member.is_dir())
+                )
         return members
     if tarfile.is_tarfile(path):
         with tarfile.open(path, "r:*") as archive:
-            for item in archive.getmembers():
-                name = item.name.rstrip("/")
+            for tar_member in archive.getmembers():
+                name = tar_member.name.rstrip("/")
                 if name:
                     _safe_relative_name(name)
-                if not (item.isfile() or item.isdir()):
-                    raise ValueError(f"Special TAR members are not allowed: {item.name}")
-                members.append(ArchiveMember(item.name, item.size, item.isdir()))
+                if not (tar_member.isfile() or tar_member.isdir()):
+                    raise ValueError(f"Special TAR members are not allowed: {tar_member.name}")
+                members.append(
+                    ArchiveMember(tar_member.name, tar_member.size, tar_member.isdir())
+                )
         return members
     raise ValueError(f"Unsupported or invalid archive: {path}")
 
@@ -80,19 +86,21 @@ def safe_extract_archive(
     extracted_bytes = 0
     if zipfile.is_zipfile(archive_path):
         with zipfile.ZipFile(archive_path) as archive:
-            for item in archive.infolist():
-                name = item.filename.rstrip("/")
+            for zip_member in archive.infolist():
+                name = zip_member.filename.rstrip("/")
                 if not name:
                     continue
                 target = (root / Path(*_safe_relative_name(name).parts)).resolve()
                 if root not in target.parents and target != root:
-                    raise ValueError(f"Archive member escapes destination: {item.filename}")
-                if item.is_dir():
+                    raise ValueError(
+                        f"Archive member escapes destination: {zip_member.filename}"
+                    )
+                if zip_member.is_dir():
                     target.mkdir(parents=True, exist_ok=True)
                     continue
                 target.parent.mkdir(parents=True, exist_ok=True)
-                with archive.open(item) as source, target.open("xb") as output:
-                    while chunk := source.read(1024 * 1024):
+                with archive.open(zip_member) as zip_source, target.open("xb") as output:
+                    while chunk := zip_source.read(1024 * 1024):
                         extracted_bytes += len(chunk)
                         if extracted_bytes > max_total_bytes:
                             raise ValueError(
@@ -101,23 +109,23 @@ def safe_extract_archive(
                         output.write(chunk)
     else:
         with tarfile.open(archive_path, "r:*") as archive:
-            for item in archive.getmembers():
-                name = item.name.rstrip("/")
+            for tar_member in archive.getmembers():
+                name = tar_member.name.rstrip("/")
                 if not name:
                     continue
                 relative = _safe_relative_name(name)
                 target = (root / Path(*relative.parts)).resolve()
                 if root not in target.parents and target != root:
-                    raise ValueError(f"Archive member escapes destination: {item.name}")
-                if item.isdir():
+                    raise ValueError(f"Archive member escapes destination: {tar_member.name}")
+                if tar_member.isdir():
                     target.mkdir(parents=True, exist_ok=True)
                     continue
-                source = archive.extractfile(item)
-                if source is None:
-                    raise ValueError(f"Could not read archive member: {item.name}")
+                tar_source = archive.extractfile(tar_member)
+                if tar_source is None:
+                    raise ValueError(f"Could not read archive member: {tar_member.name}")
                 target.parent.mkdir(parents=True, exist_ok=True)
-                with source, target.open("xb") as output:
-                    while chunk := source.read(1024 * 1024):
+                with tar_source, target.open("xb") as output:
+                    while chunk := tar_source.read(1024 * 1024):
                         extracted_bytes += len(chunk)
                         if extracted_bytes > max_total_bytes:
                             raise ValueError(
