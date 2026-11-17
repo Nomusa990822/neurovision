@@ -18,10 +18,12 @@ This is the summary register. Significant decisions should have individual ADR f
 | ADR-012 | OCTID candidate | Pending verification | Image collection source, per-collection rights and patient metadata remain unresolved. |
 | ADR-013 | Separate explainability/uncertainty/calibration modules | Accepted | Independent testing and method transparency. |
 | ADR-014 | Research prototype boundary | Accepted | No diagnostic or clinical-validity claims. |
-| ADR-015 | Apache License 2.0 | Accepted | Applies to original NeuroVision software and project-authored materials only; third-party materials retain their own terms. |
+| ADR-015 | Apache License 2.0 scope | Accepted | Applies to original NeuroVision software and project-authored materials only; third-party materials retain their own terms. |
 | ADR-016 | Dataset version pinning and patient-group audit | Accepted | Dataset versions are not interchangeable; leakage must be checked empirically. |
+| ADR-017 | Modular research package boundary | Proposed for Phase 2 approval | Modular monolith with scientific domain logic separated from API/database/UI adapters. |
 | ADR-018 | Apache License 2.0 | Accepted | Full canonical licence at repository root; see ADR-018. |
 | ADR-019 | Local-first DVC and dataset storage | Accepted | No shared remote until cost, security, privacy and licence implications are assessed. |
+| ADR-020 | Phase 2 Python runtime and toolchain | Accepted | Python 3.12, uv lockfile, src-layout package, Ruff, mypy, pytest, CI and minimal Docker baseline; see ADR-020. |
 
 ## Decision process
 
@@ -37,5 +39,5 @@ Each ADR records context, decision, alternatives, consequences, date and status.
 - Compute environment and experiment budget.
 - DVC remote/storage backend and access controls.
 - Frontend framework.
-- Phase 2 scaffold approval.
+- Phase 2 scaffold approval and Phase 1 sign-off.
 - Data retention and inference audit policy.
