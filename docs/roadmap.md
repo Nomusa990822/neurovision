@@ -1,7 +1,7 @@
 # NeuroVision Development Roadmap
 
 **Current phase:** Phase 1 — Project Establishment  
-**Status:** Foundation documentation committed; primary-source desk review of initial OCT dataset candidates recorded. Phase 1 remains open pending repository review and final governance decisions.
+**Status:** Foundation documentation and dataset source desk review recorded. Repository audit completed; Phase 1 remains open pending governance decisions and formal sign-off.
 
 Durations are planning estimates, not commitments. Dependencies and dataset access may change the schedule.
 
@@ -38,6 +38,20 @@ Release tags are planned milestones, not claims of completion or clinical readin
 ## Milestone governance
 
 Every milestone must have an ID, owner, dependencies, acceptance criteria, evidence links and documentation updates. A task is not complete merely because code was written or a command ran. Failed checks and unresolved issues remain visible.
+
+## Phase 1 exit checklist
+
+- [x] Project charter, problem statement and research objectives committed.
+- [x] Functional and non-functional requirements documented.
+- [x] Logical system architecture documented.
+- [x] Dataset candidates and source-review findings recorded.
+- [x] Dataset governance and patient-leakage controls documented.
+- [x] Evaluation and reproducibility strategy documented.
+- [x] Repository contents and missing engineering scaffold audited.
+- [ ] Confirm project software licence.
+- [ ] Confirm data storage and DVC remote strategy.
+- [ ] Review and approve the Phase 2 scaffold plan.
+- [ ] Final Phase 1 sign-off.
 
 ## Immediate next work
 

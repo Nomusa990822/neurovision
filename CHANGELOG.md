@@ -8,6 +8,7 @@ All notable project changes are recorded here. This project follows a pragmatic 
 - Phase 1 foundation documentation.
 - Primary-source desk review of Kermany OCT2017, OCTDL and OCTID candidate datasets.
 - Dataset versioning, licensing-scope and patient-level leakage controls in governance documentation.
+- Repository architecture audit and proposed Phase 2 scaffold boundaries.
 ### Pending
 - Repository engineering scaffold, CI and reproducible environment (Phase 2).
 - Dataset acquisition, checksum verification and empirical integrity/patient audit (Phase 3).
