@@ -7,12 +7,28 @@ from pathlib import Path
 from typing import Any
 
 REQUIRED_FIELDS = (
-    "dataset_id", "dataset_title", "publisher_or_depositor", "source_url",
-    "persistent_identifier", "version", "acquired_at_utc", "acquisition_method",
-    "terms_url", "licence_name", "licence_scope_notes", "archive_filename",
-    "archive_bytes", "archive_sha256", "extracted_file_count", "metadata_files",
-    "patient_id_available", "eye_id_available", "scanner_site_metadata",
-    "acquisition_status", "intended_use", "limitations",
+    "dataset_id",
+    "dataset_title",
+    "publisher_or_depositor",
+    "source_url",
+    "persistent_identifier",
+    "version",
+    "acquired_at_utc",
+    "acquisition_method",
+    "terms_url",
+    "licence_name",
+    "licence_scope_notes",
+    "archive_filename",
+    "archive_bytes",
+    "archive_sha256",
+    "extracted_file_count",
+    "metadata_files",
+    "patient_id_available",
+    "eye_id_available",
+    "scanner_site_metadata",
+    "acquisition_status",
+    "intended_use",
+    "limitations",
 )
 VALID_STATUSES = {"candidate", "source_verified", "acquired", "audited", "approved"}
 
@@ -57,7 +73,9 @@ def validate_manifest(manifest: dict[str, Any]) -> list[str]:
         errors.append("acquisition_status must be one of: " + ", ".join(sorted(VALID_STATUSES)))
     for key in ("archive_bytes", "extracted_file_count"):
         value = manifest.get(key)
-        if value is not None and (\n            not isinstance(value, int) or isinstance(value, bool) or value < 0\n        ):
+        if value is not None and (
+            not isinstance(value, int) or isinstance(value, bool) or value < 0
+        ):
             errors.append(f"{key} must be a non-negative integer or null")
     digest = manifest.get("archive_sha256")
     if digest is not None and (
