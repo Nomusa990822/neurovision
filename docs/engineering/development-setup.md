@@ -1,42 +1,36 @@
 # NeuroVision Development Setup
 
-> This guide describes the initial package scaffold. A committed dependency lock and CI verification are still pending; do not treat this as a fully reproducible release environment until those gates pass.
+The Python 3.12 development environment is locked and verified by the GitHub Actions workflow at `.github/workflows/python-quality.yml`.
 
 ## Requirements
 
 - Python 3.12.
-- uv (use the version selected by the project maintainers).
+- uv.
 - Git.
 
-## Create the environment
+## Create or synchronise the environment
 
 From the repository root:
-
-```bash
-uv sync --all-groups
-```
-
-Until `uv.lock` is committed, this command resolves the declared dependency ranges and is not yet guaranteed to reproduce an identical environment. Once the lockfile is added, use:
 
 ```bash
 uv sync --locked --all-groups
 ```
 
-## Quality commands
+The committed `uv.lock` records the resolved development dependency graph. Use `--locked` so uv fails rather than silently changing the lockfile during environment setup.
+
+## Quality and reproducibility commands
 
 ```bash
-uv run pytest
+uv lock --check --python 3.12
+uv sync --locked --all-groups
 uv run pytest --cov=neurovision --cov-report=term-missing
 uv run ruff check .
 uv run ruff format --check .
 uv run mypy
-```
-
-## Package build
-
-```bash
 uv build
 ```
+
+These checks run on GitHub-hosted Ubuntu runners for pull requests and pushes to `main`. The workflow uses Python 3.12, verifies the committed lockfile, installs the locked environment, runs the test and quality gates, and builds both wheel and source distributions.
 
 ## Configuration
 
@@ -52,4 +46,6 @@ Do not place secrets, patient identifiers or private dataset paths in `.env.exam
 
 ## Current scaffold boundaries
 
-The initial package contains package metadata, immutable settings, path resolution and a Python random-seed helper. It does not yet implement dataset ingestion, image processing, models, training, calibration, explainability, uncertainty estimation, API routes or database access.
+The initial package contains package metadata, immutable settings implemented with standard-library dataclasses, path resolution and a Python random-seed helper. It does not yet implement dataset ingestion, image processing, models, training, calibration, explainability, uncertainty estimation, API routes or database access.
+
+The Docker baseline is still pending and will be delivered under WP08.
