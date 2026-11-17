@@ -21,7 +21,7 @@ NeuroVision is a research and engineering project investigating how deep learnin
 | Area | Technology |
 |---|---|
 | Language | Python 3.12 baseline |
-| Dependency management | uv, `pyproject.toml`, `uv.lock` (lockfile pending) |
+| Dependency management | uv, `pyproject.toml`, committed `uv.lock` |
 | Deep learning | PyTorch (modelling phase) |
 | Image processing | OpenCV, NumPy |
 | API / database | FastAPI / PostgreSQL |
@@ -30,7 +30,7 @@ NeuroVision is a research and engineering project investigating how deep learnin
 | Quality | Pytest, Ruff, mypy |
 | Deployment / CI | Docker / GitHub Actions |
 
-See the [Phase 2 engineering specification](docs/engineering/phase-2-specification.md).
+See the [Phase 2 engineering specification](docs/engineering/phase-2-specification.md) and [development setup](docs/engineering/development-setup.md).
 
 ## Repository structure
 
@@ -43,12 +43,18 @@ See the [Phase 2 engineering specification](docs/engineering/phase-2-specificati
 ## Current status
 
 **Phase:** 2 — Engineering Foundation  
-**Work package:** WP06 — Initial Python package scaffold  
-**Implemented in this work package:** src-layout package metadata, Python 3.12 declaration, immutable environment-backed settings, project/data path helpers, Python RNG seed helper, focused unit tests, ignore rules and setup documentation.
+**Current work package:** WP08 — Docker baseline and final Phase 2 acceptance
 
-**Still pending:** generated and committed `uv.lock`, full local verification under Python 3.12, Ruff/mypy execution, GitHub Actions CI, Docker image and complete Phase 2 acceptance evidence. This scaffold is not yet a verified reproducible environment. No OCT data has been acquired and no model has been trained.
+**Verified engineering baseline (WP06–WP07):**
+- Python 3.12 src-layout package, immutable standard-library settings, path helpers and Python RNG seeding.
+- Committed `uv.lock` generated on a GitHub-hosted Python 3.12.16 runner.
+- Read-only GitHub Actions quality workflow with locked dependency verification.
+- 15 unit tests passed; 98% statement coverage in the verified run.
+- Ruff lint and formatting, mypy, locked environment installation, and wheel/source distribution build all passed.
 
-See the [roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repository audit](docs/architecture/repository-audit.md), [decision register](docs/decisions.md), [risk register](docs/risk-register.md) and [development setup](docs/engineering/development-setup.md).
+**Still pending:** non-root Docker baseline and container smoke test, final Phase 2 documentation/acceptance review, and formal Phase 1 closure. No OCT data has been acquired and no model has been trained. Dataset acquisition and empirical patient/integrity audit remain Phase 3 work.
+
+See the [roadmap](docs/roadmap.md), [requirements](docs/requirements.md), [repository audit](docs/architecture/repository-audit.md), [decision register](docs/decisions.md) and [risk register](docs/risk-register.md).
 
 ## Scientific integrity
 
