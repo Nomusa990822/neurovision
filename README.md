@@ -92,7 +92,7 @@ The project will introduce a pinned, reproducible Python environment and automat
 
 ## Licence
 
-No project software licence has been selected yet. Dataset licences are independent and must be respected individually. See [dataset governance](docs/datasets/governance.md).
+Original NeuroVision software and project-authored materials are licensed under [Apache License 2.0](LICENSE) (SPDX: Apache-2.0). Third-party code, datasets, OCT images, annotations, pretrained weights and other assets remain subject to their own licences and terms. See [dataset governance](docs/datasets/governance.md).
 
 ## Acknowledgements
 
