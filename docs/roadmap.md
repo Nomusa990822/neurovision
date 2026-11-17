@@ -4,13 +4,13 @@
 **Phase 1:** Closed; acceptance record committed.  
 **Phase 2:** Closed; WP05–WP08 merged and verified on GitHub-hosted runners.  
 **Current work package:** WP11 — Dataset acquisition and immutable provenance.  
-**Next gate:** Select and acquire an exact dataset release only after its terms and storage arrangements are confirmed.
+**Next gate:** Independently verify the owner-reported OCTDL V4 files, capture checksums and complete archive integrity checks.
 
 | Phase | Scope | Status |
 |---|---|---|
 | 1. Project establishment | Charter, objectives, requirements, architecture, governance and roadmap | Complete; accepted 2026-11-17 |
 | 2. Engineering foundation | Python package, locked environment, CI, Docker and tests | Complete; accepted 2026-11-17 |
-| 3. Dataset acquisition/audit | Source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | In progress — WP09 and WP10 merged; acquisition pending |
+| 3. Dataset acquisition/audit | Source/version and licence checks, acquisition, hashes, metadata, quality and patient audit | In progress — WP09/WP10 merged; owner-reported OCTDL V4 files await independent verification |
 | 4. EDA and preprocessing | Distribution, image quality, preprocessing and split design | Not started |
 | 5. Baseline modelling | Baseline CNN and evaluation | Blocked on Phase 3 audit and split approval |
 | 6. Model investigation | Controlled architecture comparisons and ablations | Not started |
@@ -34,13 +34,13 @@ Verified evidence:
 
 - [x] WP09 — dataset acquisition and audit protocol; version-specific source review updated.
 - [x] WP10 — local manifest, SHA-256, archive safety and file inventory tooling; merged and verified in [run #44053030829](https://github.com/Nomusa990822/neurovision/actions/runs/44053030829) (29 tests, Ruff, mypy, build and Docker smoke test).
-- [ ] WP11 — acquire one selected dataset release outside Git; record terms evidence, archive SHA-256 and immutable provenance (next).
+- [ ] WP11 — independently verify owner-reported OCTDL V4 archive and CSV; record exact sizes, SHA-256 hashes, terms evidence and immutable provenance. Acquisition record drafted in [OCTDL V4 acquisition record](datasets/acquisition-record-octdl-v4.md).
 - [ ] WP12 — run image, label, metadata, duplicate and patient-group audits.
 - [ ] WP13 — review audit report and approve named dataset use; freeze patient-aware split policy.
 
 ## Phase 3 candidate strategy
 
-OCTDL Mendeley V4 is the leading candidate for patient-grouped experiments because its published record describes 2,064 images from 821 patients and includes patient/eye fields in its CSV. This is a candidate recommendation, not acquisition or approval. Kermany OCT2017 V3 remains a large four-class candidate but has research-only wording alongside a CC BY 4.0 display that requires terms review. OCTID remains conditional because its actual image source and patient metadata have not been verified.
+OCTDL Mendeley V4 is the leading candidate for patient-grouped experiments because its published record describes 2,064 images from 821 patients and includes patient/eye fields in its CSV. This is a candidate recommendation, not independent verification or approval. Kermany OCT2017 V3 remains a large four-class candidate but has research-only wording alongside a CC BY 4.0 display that requires terms review. OCTID remains conditional because its actual image source and patient metadata have not been verified.
 
 ## Non-negotiable research gate
 
