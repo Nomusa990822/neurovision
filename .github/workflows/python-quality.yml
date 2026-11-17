@@ -1,0 +1,51 @@
+name: NeuroVision Python quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-quality:
+    name: Python 3.12 quality checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Verify dependency lock is current
+        run: uv lock --check --python 3.12
+      - name: Install locked project and development dependencies
+        run: uv sync --locked --all-groups
+      - name: Run unit tests with coverage
+        run: uv run pytest --cov=neurovision --cov-report=term-missing
+      - name: Run Ruff lint
+        run: uv run ruff check .
+      - name: Verify Ruff formatting
+        run: uv run ruff format --check .
+      - name: Run mypy
+        run: uv run mypy
+      - name: Build wheel and source distribution
+        run: uv build
+      - name: Upload package distributions
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: neurovision-python-dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
