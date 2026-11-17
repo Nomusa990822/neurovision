@@ -1,13 +1,13 @@
 # Dataset Register
 
-**Status:** Primary-source desk review updated 2026-11-17. No dataset has been downloaded, locally audited or approved for model training. All candidates remain conditional pending exact-release acquisition and empirical verification.
+**Status:** Primary-source desk review updated 2026-11-17. OCTDL V4 files have been reported as downloaded and stored by the project owner, but they have not yet been independently accessed, checksummed, locally audited or approved. All candidates remain conditional pending exact-release acquisition verification and empirical checks.
 
 ## Candidate comparison
 
 | Dataset | Published scope | Patient metadata / split evidence | Rights and source | Proposed role | Status |
 |---|---|---|---|---|---|
-| Kermany OCT2017, Mendeley V3 | Four labels: CNV, DME, DRUSEN, NORMAL. The V3 record describes training and test sets of independent patients. A leakage study reports 108,312 training images and 1,000 test images for V3. | Filenames encode randomized patient IDs. The 2022 analysis found no subject-ID overlap for V3, but found 92% overlap between training and test subject IDs in V2. NeuroVision must independently parse and audit V3. | Exact record: https://doi.org/10.17632/rscbjbr9sj.3. Mendeley displays CC BY 4.0 and also states the image repository is for research use only. Record both statements; resolve applicable terms for the intended use and do not redistribute images without clear rights. | Large four-class baseline candidate, subject to rights and audit gates. | Source/version identified; conditional candidate |
-| OCTDL, Mendeley V4 | 2,064 images from 821 patients; seven labels: AMD, DME, ERM, NO, RAO, RVO, VID. Published image counts: 1,231; 147; 155; 332; 22; 101; 76 respectively. | Filenames encode patient IDs. The V4 CSV includes file_name, disease, subcategory, condition, patient_id, eye, sex, year, image_width and image_height. Reconcile CSV and filename identifiers against all acquired files. | Exact record: https://doi.org/10.17632/sncdhf53xc.4 (published 18 March 2024). Mendeley states CC BY 4.0. Archive and CSV are separately listed; capture exact downloaded hashes and terms. | Primary patient-grouped research candidate; possible cross-dataset evaluation only after cohort and label compatibility review. | Exact source/version and published metadata documented; conditional candidate |
+| Kermany OCT2017, Mendeley V3 | Four labels: CNV, DME, DRUSEN, NORMAL. The V3 record describes training and test sets of independent patients. A leakage study reports 108,312 training images and 1,000 test images for V3. | Filenames encode randomized patient IDs. The 2022 analysis found no subject-ID overlap for V3, but found 92% overlap between training and test subject IDs in V2. NeuroVision must independently parse and audit V3. | Exact record: https://doi.org/10.17632/rscbjbr9sj.3. Mendeley displays CC BY 4.0 and also states the image repository is for research use only. Record both statements; resolve applicable terms for the intended use and do not redistribute images without clear rights. | Large four-class baseline candidate, subject to rights and audit gates. | Source/version reviewed; conditional candidate |
+| OCTDL, Mendeley V4 | 2,064 images from 821 patients; seven labels: AMD, DME, ERM, NO, RAO, RVO, VID. Published image counts: 1,231; 147; 155; 332; 22; 101; 76 respectively. | Filenames encode patient IDs. The V4 CSV includes file_name, disease, subcategory, condition, patient_id, eye, sex, year, image_width and image_height. Reconcile CSV and filename identifiers against all acquired files. | Exact record: https://doi.org/10.17632/sncdhf53xc.4 (published 18 March 2024). Mendeley states CC BY 4.0. Archive and CSV are separately listed; capture exact downloaded hashes and terms. | Primary patient-grouped research candidate; possible cross-dataset evaluation only after cohort and label compatibility review. | Owner-reported archive/CSV download and Drive storage; independent verification, hashes, audit and approval pending |
 | OCTID | 572 images commonly reported across normal, macular hole, AMD, CSR and DR. Original work: 2018 preprint and 2020 journal article. | Patient-level identifiers and a verified official patient-independent split have not been established from the source records reviewed. Do not assume image-level partitions are patient-independent. | Paper: https://doi.org/10.1016/j.compeleceng.2019.106532. Borealis DOI https://doi.org/10.5683/SP2/W43PFI is a citation record containing the paper PDF, not the OCT image archive. Later literature points to https://dataverse.scholarsportal.info/dataverse/OCTID; verify owner, files and terms before acquisition. | Supplementary robustness/external evaluation only if source, rights, cohort independence and grouping are verified. | Image-source, licence and metadata checks open |
 
 ## Source-review findings and caveats
@@ -21,6 +21,8 @@ Tampu et al. (2022) report 92% overlap between train and test subject IDs in Ker
 ### OCTDL
 
 Pin **Version 4**, DOI **10.17632/sncdhf53xc.4**, not a mutable concept DOI or earlier release. The Mendeley V4 page lists a 380 MB ZIP and a 107 KB CSV. The associated 2024 Scientific Data paper reports 2,064 images from 821 patients and describes patient identifiers in filenames and CSV metadata. The cohort was collected in Yekaterinburg, Russia. Its class imbalance is substantial: RAO has 22 images from 11 patients, while AMD has 1,231 images from 421 patients. Patient-level counts and class counts must both be reported. A random image split would be unacceptable.
+
+The project owner reports downloading `OCTDL.zip` and `OCTDL_labels.csv` and storing them under `Neurovision/dataset/OCTDL_V4/` in Google Drive. The exact file bytes are not currently accessible to the project audit tools. Treat this as owner-reported acquisition, not independently verified acquisition: archive/CSV sizes, SHA-256 hashes, ZIP CRC, extracted inventory and image-to-label reconciliation remain outstanding. See [OCTDL V4 acquisition record](acquisition-record-octdl-v4.md).
 
 ### OCTID
 
@@ -53,7 +55,7 @@ A broad normal-versus-abnormal task may be investigated as a separate prespecifi
 1. Locate the exact original release and version.
 2. Save licence and terms evidence for the exact image files, not only the paper or metadata record.
 3. Record download date, source URL, archive size and SHA-256.
-4. Inventory files and verify decoding, dimensions, channels and label folders.
+4. Inventory files and verify decoding, dimensions, formats and label folders.
 5. Reconcile counts and labels with the publication.
 6. Parse patient and eye identifiers; test group overlap and duplicates.
 7. Record scanner/site metadata, class imbalance, missingness and known limitations.
@@ -63,9 +65,9 @@ A broad normal-versus-abnormal task may be investigated as a separate prespecifi
 
 - Candidate: identified but not verified.
 - Source/version reviewed: exact source record and published metadata inspected; licence interpretation or empirical checks may remain open.
-- Source verified: original source and applicable terms checked for the intended use.
-- Acquired: files downloaded and checksummed.
+- Owner-reported acquired: project owner reports obtaining files; bytes and hashes have not been independently checked.
+- Acquired: exact files accessible to the audit environment and archive/metadata hashes recorded.
 - Audited: integrity, metadata, labels and grouping inspected.
 - Approved for specified use: governance review completed for that use.
 
-No candidate in this register has reached Acquired, Audited or Approved status.
+No candidate has reached Audited or Approved status. OCTDL V4 is at owner-reported acquired status only.
