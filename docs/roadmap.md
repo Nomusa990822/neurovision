@@ -33,7 +33,7 @@ Verified evidence:
 ## Phase 3 work packages
 
 - [x] WP09 — dataset acquisition and audit protocol; version-specific source review updated.
-- [x] WP10 — local manifest, SHA-256, archive safety and file inventory tooling; merged and verified.
+- [x] WP10 — local manifest, SHA-256, archive safety and file inventory tooling; merged and verified in [run #44053030829](https://github.com/Nomusa990822/neurovision/actions/runs/44053030829) (29 tests, Ruff, mypy, build and Docker smoke test).
 - [ ] WP11 — acquire one selected dataset release outside Git; record terms evidence, archive SHA-256 and immutable provenance (next).
 - [ ] WP12 — run image, label, metadata, duplicate and patient-group audits.
 - [ ] WP13 — review audit report and approve named dataset use; freeze patient-aware split policy.
