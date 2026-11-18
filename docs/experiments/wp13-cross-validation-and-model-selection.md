@@ -1,6 +1,6 @@
 # WP13 — Patient-Grouped Cross-Validation and Model-Selection Protocol
 
-**Status:** Protocol approved by project owner on 2026-11-18; implementation and pre-training gates remain outstanding.  
+**Status:** Protocol approved by project owner on 2026-11-18; inner-fold generator and synthetic tests implemented; execution against private OCTDL files and pre-training gates remain outstanding.  
 **Work package:** WP13 — Cross-validation and model-selection protocol.  
 **Dataset candidate:** OCTDL Mendeley Data Version 4 (DOI: 10.17632/sncdhf53xc.4).  
 **Protocol version:** 1.0  
@@ -227,4 +227,6 @@ Approval of this protocol does not constitute dataset licence approval or clinic
 
 ## 15. Current status
 
-**Approved protocol; implementation pending.** The project owner approved the nested patient-grouped evaluation design on 2026-11-18. No model training or performance evaluation is claimed. Dataset governance and audit gates, inner-fold implementation and integrity tests, and the baseline experiment configuration remain outstanding.
+**Approved protocol; data-specific inner-fold execution pending.** The project owner approved the nested patient-grouped evaluation design on 2026-11-18. A deterministic generator, independent source/mapping re-read checks and synthetic tests have been implemented. The generator has not yet been run against the private OCTDL files, so no data-specific inner-fold assignment or integrity result is claimed. No model training or performance evaluation is claimed. Dataset governance and audit gates, review of the generated aggregate class support, and the baseline experiment configuration remain outstanding.
+
+See [WP13 Inner-Fold Generation Implementation](wp13-inner-fold-generation.md) for the local execution procedure.

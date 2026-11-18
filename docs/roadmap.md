@@ -4,7 +4,7 @@
 **Phase 1:** Closed; acceptance record committed.  
 **Phase 2:** Closed; WP05–WP08 merged and verified on GitHub-hosted runners.  
 **Current work package:** WP13 — Nested patient-grouped evaluation protocol and inner-fold integrity.  
-**Next gate:** Generate and independently verify four inner folds for each outer iteration; complete remaining dataset governance gates before training.
+**Next gate:** Run the implemented inner-fold generator against the private OCTDL files, review the aggregate integrity report and preserve the mapping privately; complete remaining dataset governance gates before training.
 
 | Phase | Scope | Status |
 |---|---|---|
@@ -36,7 +36,7 @@ Verified evidence:
 - [x] WP10 — local manifest, SHA-256, archive safety and file inventory tooling; merged and verified in [run #44053030829](https://github.com/Nomusa990822/neurovision/actions/runs/44053030829) (29 tests, Ruff, mypy, build and Docker smoke test).
 - [x] WP11 — acquire and record OCTDL V4 provenance; verify archive SHA-256/LFS integrity, ZIP CRC, image inventory/decoding, dimensions and CSV reconciliation. File-level licence review remains open.
 - [x] WP12 — complete local image, label, metadata and patient-group audits; create and independently verify a candidate five-fold patient-grouped outer assignment. Exact/near-duplicate screening remains outstanding.
-- [ ] WP13 — protocol approved; generate and independently verify four inner folds for each outer iteration. Named dataset-use approval and training gates remain open.
+- [ ] WP13 — protocol approved; generator and synthetic integrity tests implemented. Data-specific inner-fold generation and independent verification remain pending. Named dataset-use approval and training gates remain open.
 
 ## Phase 3 candidate strategy
 

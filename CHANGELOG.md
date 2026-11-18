@@ -15,6 +15,7 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - Formal Phase 1/2 acceptance record and Phase 3 dataset acquisition/audit protocol.
 - Local dataset manifest, SHA-256, archive inspection/extraction, inventory CLI and synthetic tests (WP10).
 - OCTDL V4 acquisition record updated with verified archive SHA-256/LFS integrity, ZIP CRC, image inventory/decoding, dimensions, CSV reconciliation and patient-group audit evidence.
+- WP13 nested inner-fold generator, independent re-read integrity checks, owner-only output handling and synthetic tests.
 
 ### Changed
 - Dataset register pins OCTDL Mendeley Version 4 and records the Kermany V3 terms ambiguity and OCTID source limitations.
@@ -30,7 +31,7 @@ All notable project changes are recorded here. Releases do not imply clinical va
 ### Pending
 - Complete exact/near-duplicate screening and record the CSV SHA-256.
 - Complete exact file-level licence review and purpose-specific dataset approval.
-- Generate and independently verify nested WP13 inner folds; model training remains blocked until all gates are approved.
+- Execute and independently verify the WP13 inner-fold generator against the private OCTDL source files; model training remains blocked until all gates are approved.
 
 ## [0.1.0] - Unreleased
 
