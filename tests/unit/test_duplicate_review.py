@@ -65,8 +65,8 @@ def test_review_pack_rejects_missing_image(tmp_path) -> None:
     pairs = tmp_path / "pairs.csv"
     pairs.write_text(
         "left_file_name,right_file_name,left_patient_id,right_patient_id,"
-        "left_disease,right_disease,hamming_distance,cross_patient\\n"
-        "missing.jpg,also-missing.jpg,P1,P2,AMD,DME,0,True\\n",
+        "left_disease,right_disease,hamming_distance,cross_patient\n"
+        "missing.jpg,also-missing.jpg,P1,P2,AMD,DME,0,True\n",
         encoding="utf-8",
     )
     with pytest.raises(ValueError, match="exactly one extracted image"):
