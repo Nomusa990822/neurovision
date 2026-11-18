@@ -9,6 +9,8 @@ import os
 import stat
 from collections import defaultdict
 from datetime import UTC, datetime
+from importlib import import_module
+from io import StringIO
 from pathlib import Path
 from typing import Any
 
@@ -27,14 +29,14 @@ def sha256_file(path: Path) -> str:
 def difference_hash(path: Path) -> int:
     """Compute a 64-bit dHash. Pillow is required at execution time."""
     try:
-        from PIL import Image
+        image_module = import_module("PIL.Image")
     except ImportError as error:
         raise RuntimeError(
             "Near-duplicate screening requires Pillow; install it with "
             "'python -m pip install Pillow'."
         ) from error
-    with Image.open(path) as source:
-        image = source.convert("L").resize((9, 8), Image.Resampling.LANCZOS)
+    with image_module.open(path) as source:
+        image = source.convert("L").resize((9, 8), image_module.Resampling.LANCZOS)
         pixels = list(image.getdata())
     value = 0
     for row in range(8):
@@ -181,8 +183,6 @@ def run_duplicate_screen(
             "Reports contain private filenames and patient identifiers; keep them outside Git.",
         ],
     }
-    from io import StringIO
-
     fields = [
         "left_file_name", "right_file_name", "left_patient_id", "right_patient_id",
         "left_disease", "right_disease", "hamming_distance", "cross_patient",
