@@ -169,7 +169,9 @@ def run_duplicate_screen(
         "unique_image_sha256_count": len({item["sha256"] for item in records}),
         "exact_duplicate_group_count": len(exact_groups),
         "exact_duplicate_record_count": sum(item["record_count"] for item in exact_groups),
-        "exact_cross_patient_group_count": sum(item["cross_patient"] is True for item in exact_groups),
+        "exact_cross_patient_group_count": sum(
+            item["cross_patient"] is True for item in exact_groups
+        ),
         "perceptual_method": "64-bit difference hash; grayscale 9x8 Lanczos resize",
         "max_hamming_distance_inclusive": max_hamming_distance,
         "near_duplicate_candidate_pair_count": len(pairs),
