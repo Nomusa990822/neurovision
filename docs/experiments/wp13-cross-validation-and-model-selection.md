@@ -1,9 +1,9 @@
 # WP13 — Patient-Grouped Cross-Validation and Model-Selection Protocol
 
-**Status:** Proposed; requires review and formal approval before model training.  
+**Status:** Protocol approved by project owner on 2026-11-18; implementation and pre-training gates remain outstanding.  
 **Work package:** WP13 — Cross-validation and model-selection protocol.  
 **Dataset candidate:** OCTDL Mendeley Data Version 4 (DOI: 10.17632/sncdhf53xc.4).  
-**Protocol version:** 1.0-draft  
+**Protocol version:** 1.0  
 **Date:** 2026-11-18
 
 ## 1. Purpose and scope
@@ -227,4 +227,4 @@ Approval of this protocol does not constitute dataset licence approval or clinic
 
 ## 15. Current status
 
-**Proposed, not approved.** No model training or performance evaluation is claimed by this document. The private split mapping has been generated and independently verified, but the remaining dataset governance and audit gates and the implementation of nested evaluation remain outstanding.
+**Approved protocol; implementation pending.** The project owner approved the nested patient-grouped evaluation design on 2026-11-18. No model training or performance evaluation is claimed. Dataset governance and audit gates, inner-fold implementation and integrity tests, and the baseline experiment configuration remain outstanding.
