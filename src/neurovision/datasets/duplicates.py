@@ -174,7 +174,7 @@ def run_duplicate_screen(
         "max_hamming_distance_inclusive": max_hamming_distance,
         "near_duplicate_candidate_pair_count": len(pairs),
         "near_duplicate_cross_patient_pair_count": sum(
-            int(item["cross_patient"]) for item in pairs
+            item["cross_patient"] is True for item in pairs
         ),
         "exact_duplicate_groups": exact_groups,
         "limitations": [
