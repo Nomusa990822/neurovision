@@ -1,7 +1,7 @@
 # Dataset Acquisition and Audit Protocol
 
 **Phase:** 3 — Dataset Acquisition and Governance Audit  
-**Status:** Protocol defined; OCTDL V4 archive and image audit evidence recorded; governance gates remain open  
+**Status:** Protocol defined; OCTDL V4 archive/image audit and nested split integrity evidence recorded; governance gates remain open  
 **Applies to:** OCT image datasets and all derived manifests
 
 ## 1. Purpose and entry criteria
@@ -35,7 +35,7 @@ Create one manifest record per acquired dataset release. Required fields:
 
 | Field | Meaning |
 |---|---|
-| dataset_id | Stable project identifier, e.g. `octdl_v4` |
+| dataset_id | Stable project identifier, e.g. octdl_v4 |
 | dataset_title | Publisher's dataset title |
 | publisher_or_depositor | Named source owner/depositor |
 | source_url | Exact release landing page |
@@ -45,7 +45,7 @@ Create one manifest record per acquired dataset release. Required fields:
 | acquired_at_utc | UTC timestamp of acquisition |
 | acquisition_method | Browser/manual/API/author-provided; no credential values |
 | terms_url | Exact terms/licence page |
-| licence_name | Exact stated licence, or `not stated` |
+| licence_name | Exact stated licence, or not stated |
 | licence_scope_notes | Ambiguities, research-only language, file-level caveats |
 | archive_filename | Original archive filename |
 | archive_bytes | Exact archive size in bytes |
@@ -55,7 +55,7 @@ Create one manifest record per acquired dataset release. Required fields:
 | metadata_files | CSV/JSON/readme files and hashes |
 | patient_id_available | Boolean/unknown |
 | eye_id_available | Boolean/unknown |
-| scanner_site_metadata | Available scanner/site fields or `not reported` |
+| scanner_site_metadata | Available scanner/site fields or not reported |
 | acquisition_status | candidate/source_verified/acquired/audited/approved |
 | intended_use | Explicit approved or proposed use |
 | limitations | Known caveats and unresolved questions |
@@ -74,14 +74,12 @@ Do not store direct identifiers. If a source provides pseudonymous patient IDs, 
 
 Suggested local data layout (not committed):
 
-```text
-NEUROVISION_DATA_ROOT/
-  raw/<dataset_id>/<archive>
-  interim/<dataset_id>/
-  manifests/<dataset_id>/
-  reports/<dataset_id>/
-  processed/<dataset_id>/
-```
+    NEUROVISION_DATA_ROOT/
+      raw/<dataset_id>/<archive>
+      interim/<dataset_id>/
+      manifests/<dataset_id>/
+      reports/<dataset_id>/
+      processed/<dataset_id>/
 
 ## 5. File and image integrity audit
 
@@ -123,23 +121,23 @@ The audit report must include expected versus observed counts, corrupt-file coun
 
 ### Kermany OCT2017
 
-- Pin Mendeley V3 (DOI `10.17632/rscbjbr9sj.3`) explicitly; do not mix V2 and V3.
+- Pin Mendeley V3 (DOI 10.17632/rscbjbr9sj.3) explicitly; do not mix V2 and V3.
 - V3's source page describes randomized patient IDs in filenames and independent-patient train/test partitions.
 - The source page also says the images are for research use only while displaying CC BY 4.0. Record this ambiguity and restrict use to the verified permitted purpose; do not redistribute images unless the applicable rights are clarified.
 - Independently parse IDs and test overlap. Published split descriptions do not replace our audit.
 
 ### OCTDL
 
-- Pin Mendeley Version 4 (DOI `10.17632/sncdhf53xc.4`).
-- Reconcile the 2,064 image records against the archive and the CSV columns `file_name`, `disease`, `patient_id`, `eye`, and other available fields.
+- Pin Mendeley Version 4 (DOI 10.17632/sncdhf53xc.4).
+- Reconcile the 2,064 image records against the archive and the CSV columns file_name, disease, patient_id, eye, and other available fields.
 - Reconcile filename-encoded patient IDs against CSV patient IDs.
 - Report image and patient counts by class, and assess rare classes before defining any task.
 - The published cohort is from Yekaterinburg, Russia; do not claim broad geographic or device generalisability from this cohort alone.
-- Track owner-reported acquisition separately from independently verified archive access, hashes and integrity results. See [OCTDL V4 acquisition record](acquisition-record-octdl-v4.md).
+- Track owner-reported acquisition separately from independently verified archive access, hashes and integrity results. See the OCTDL V4 acquisition record.
 
 ### OCTID
 
-- The Borealis DOI `10.5683/SP2/W43PFI` is a citation record containing a paper PDF, not evidence that the image archive is present there.
+- The Borealis DOI 10.5683/SP2/W43PFI is a citation record containing a paper PDF, not evidence that the image archive is present there.
 - A separate Dataverse OCTID collection is referenced in later literature. Verify its owner, files, terms and metadata before acquisition.
 - Do not assume patient identifiers or an independent test split are available.
 
@@ -159,21 +157,23 @@ A dataset approved for model development is not automatically approved for exter
 ## 10. Current project state
 
 As of 2026-11-18:
-- The original OCTDL V4 ZIP and CSV are stored in the private `neurovision-datasets` repository, outside the public code repository.
+- The original OCTDL V4 ZIP and CSV are stored in the private neurovision-datasets repository, outside the public code repository.
 - The archive size (398,564,236 bytes), SHA-256, local Git LFS integrity, ZIP CRC, 2,064-image extraction/inventory, full image decoding, image dimensions and CSV-to-image reconciliation have been verified locally by the project owner.
 - The CSV contains 2,064 image rows and 820 unique patient IDs. One patient has records in both AMD and DME; both records remain in the same patient group.
 - A deterministic five-fold patient-grouped outer assignment was independently re-read and verified locally. The patient mapping remains private.
-- Exact file-level licence scope, CSV hash recording, exact/near-duplicate screening, WP13 nested inner-fold generation and purpose-specific dataset approval remain outstanding.
+- The WP13 nested inner-fold mapping contains 3,280 assignments across 820 patients and five outer iterations. Independent re-read verification passed; the mapping remains private.
+- WP14 duplicate-screening implementation is in development. Data-specific execution and manual candidate review remain pending.
+- Exact file-level licence scope, purpose-specific dataset approval and CSV SHA-256 recording remain open.
 - No model training is authorised.
 
-See [OCTDL V4 acquisition record](acquisition-record-octdl-v4.md) for the evidence ledger and outstanding checks.
+See the OCTDL V4 acquisition record and WP14 duplicate-screening protocol for the evidence ledger and outstanding checks.
 
 ## 11. Primary references
 
-- Kermany et al. (2018), *Identifying Medical Diagnoses and Treatable Diseases by Image-Based Deep Learning*, Cell. https://doi.org/10.1016/j.cell.2018.02.010
+- Kermany et al. (2018), Identifying Medical Diagnoses and Treatable Diseases by Image-Based Deep Learning, Cell. https://doi.org/10.1016/j.cell.2018.02.010
 - Kermany OCT2017 Mendeley Version 3. https://doi.org/10.17632/rscbjbr9sj.3
-- Tampu et al. (2022), *Inflation of test accuracy due to data leakage in deep learning-based classification of OCT images*, Scientific Data. https://doi.org/10.1038/s41597-022-01618-6
-- Kulyabin et al. (2024), *OCTDL: Optical Coherence Tomography Dataset for Image-Based Deep Learning Methods*, Scientific Data. https://doi.org/10.1038/s41597-024-03182-7
+- Tampu et al. (2022), Inflation of test accuracy due to data leakage in deep learning-based classification of OCT images, Scientific Data. https://doi.org/10.1038/s41597-022-01618-6
+- Kulyabin et al. (2024), OCTDL: Optical Coherence Tomography Dataset for Image-Based Deep Learning Methods, Scientific Data. https://doi.org/10.1038/s41597-024-03182-7
 - OCTDL Mendeley Data Version 4. https://doi.org/10.17632/sncdhf53xc.4
-- Gholami et al., *OCTID: Optical Coherence Tomography Image Database*. https://doi.org/10.1016/j.compeleceng.2019.106532
+- Gholami et al., OCTID: Optical Coherence Tomography Image Database. https://doi.org/10.1016/j.compeleceng.2019.106532
 - OCTID collection reference (availability must be verified). https://dataverse.scholarsportal.info/dataverse/OCTID
