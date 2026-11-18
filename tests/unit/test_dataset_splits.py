@@ -58,9 +58,7 @@ def test_invalid_duplicate_patient_ids_are_rejected() -> None:
     ]
 
     try:
-        allocate_patient_grouped_folds(
-            groups, n_splits=2, seed=1, n_candidates=2
-        )
+        allocate_patient_grouped_folds(groups, n_splits=2, seed=1, n_candidates=2)
     except ValueError as error:
         assert "unique" in str(error)
     else:
@@ -70,9 +68,7 @@ def test_invalid_duplicate_patient_ids_are_rejected() -> None:
 def test_invalid_split_count_is_rejected() -> None:
     groups = _groups()
     try:
-        allocate_patient_grouped_folds(
-            groups, n_splits=1, seed=1, n_candidates=2
-        )
+        allocate_patient_grouped_folds(groups, n_splits=1, seed=1, n_candidates=2)
     except ValueError as error:
         assert "at least 2" in str(error)
     else:
