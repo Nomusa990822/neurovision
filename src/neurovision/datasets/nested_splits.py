@@ -58,9 +58,7 @@ def _groups_from_rows(
     ]
 
 
-def _outer_assignment(
-    rows: list[dict[str, str]], headers: list[str]
-) -> dict[str, int]:
+def _outer_assignment(rows: list[dict[str, str]], headers: list[str]) -> dict[str, int]:
     patient_column = _required_column(headers, ("patient_id",), "patient identifier")
     fold_column = _required_column(headers, ("outer_fold", "fold"), "outer fold")
     assignment: dict[str, int] = {}
@@ -169,9 +167,7 @@ def generate_inner_folds(
     with output_csv.open("x", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=["outer_fold", "patient_id", "inner_fold"])
         writer.writeheader()
-        ordered_rows = sorted(
-            output_rows, key=lambda row: (row["outer_fold"], row["patient_id"])
-        )
+        ordered_rows = sorted(output_rows, key=lambda row: (row["outer_fold"], row["patient_id"]))
         writer.writerows(ordered_rows)
     os.chmod(output_csv, 0o600)
 
@@ -183,9 +179,7 @@ def generate_inner_folds(
     verified_patient_column = _required_column(
         reread_label_headers, ("patient_id",), "patient identifier"
     )
-    verified_label_column = _required_column(
-        reread_label_headers, ("disease",), "disease label"
-    )
+    verified_label_column = _required_column(reread_label_headers, ("disease",), "disease label")
     verified_labels = _groups_from_rows(
         reread_label_rows, verified_patient_column, verified_label_column
     )
