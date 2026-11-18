@@ -59,13 +59,13 @@ def test_nested_inner_assignments_are_complete_and_private(tmp_path: Path) -> No
     assert stat.S_IMODE(output_path.stat().st_mode) == 0o600
     assert stat.S_IMODE(report_path.stat().st_mode) == 0o600
 
-    mapping = list(csv.DictReader(output_path.open(encoding="utf-8", newline="")))
+    with output_path.open(encoding="utf-8", newline="") as handle:
+        mapping = list(csv.DictReader(handle))
     assert len(mapping) == 140
     for outer_fold in range(1, 6):
         iteration = [row for row in mapping if int(row["outer_fold"]) == outer_fold]
         assert len(iteration) == 28
         assert {int(row["inner_fold"]) for row in iteration} == {1, 2, 3, 4}
-        assert all((int(row["outer_fold"]), row["patient_id"]) for row in iteration)
 
     public_report = report_path.read_text(encoding="utf-8")
     assert "patient-000" not in public_report
@@ -83,7 +83,8 @@ def test_generator_refuses_to_overwrite_outputs(tmp_path: Path) -> None:
 
 def test_generator_rejects_outer_mapping_with_missing_patient(tmp_path: Path) -> None:
     labels_path, outer_path = _write_inputs(tmp_path)
-    rows = list(csv.DictReader(outer_path.open(encoding="utf-8", newline="")))
+    with outer_path.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
     with outer_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=["patient_id", "fold"])
         writer.writeheader()
