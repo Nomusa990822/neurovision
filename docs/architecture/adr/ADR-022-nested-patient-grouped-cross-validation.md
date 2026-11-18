@@ -26,6 +26,8 @@ The proposed primary model-selection criterion is pooled inner out-of-fold image
 
 The full procedure and reporting requirements are specified in [WP13 — Patient-Grouped Cross-Validation and Model-Selection Protocol](../../experiments/wp13-cross-validation-and-model-selection.md).
 
+The reusable deterministic greedy multistart allocator is being implemented in `src/neurovision/datasets/splits.py`, with unit tests in `tests/unit/test_dataset_splits.py`. Its implementation and tests remain subject to CI verification; it does not guarantee a globally optimal allocation.
+
 ## Alternatives considered
 
 1. **Random image-level train/test split:** rejected because images from the same patient could appear in both partitions, inflating apparent generalisation.
