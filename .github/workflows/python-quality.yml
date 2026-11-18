@@ -36,7 +36,7 @@ jobs:
       - name: Run Ruff lint
         run: uv run ruff check .
       - name: Verify Ruff formatting
-        run: uv run ruff format --check .
+        run: uv run ruff format --check --diff .
       - name: Run mypy
         run: uv run mypy
       - name: Build wheel and source distribution

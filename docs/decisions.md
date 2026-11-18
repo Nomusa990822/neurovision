@@ -24,6 +24,7 @@ This is the summary register. Significant decisions should have individual ADR f
 | ADR-018 | Apache License 2.0 | Accepted | Full canonical licence at repository root; see ADR-018. |
 | ADR-019 | Local-first DVC and dataset storage | Accepted | No shared remote until cost, security, privacy and licence implications are assessed. |
 | ADR-020 | Phase 2 Python runtime and toolchain | Accepted | Python 3.12, uv lockfile, src-layout package, Ruff, mypy, pytest, CI and minimal Docker baseline; see ADR-020. |
+| ADR-022 | Nested patient-grouped cross-validation for OCTDL V4 | Accepted (2026-11-18) | Project owner approved five-fold outer evaluation with four-fold inner model selection. Implementation, dataset governance and pre-training gates remain outstanding; see WP13. |
 
 ## Decision process
 
@@ -31,7 +32,9 @@ Each ADR records context, decision, alternatives, consequences, date and status.
 
 ## Open decisions
 
-- Final dataset selection and exact versions after acquisition audit.
+- Final dataset selection and exact versions after acquisition audit and purpose-specific rights review.
+- Implementation and integrity verification of the approved WP13 inner-fold generation procedure.
+- Completion or documented risk acceptance of duplicate/near-duplicate screening.
 - Whether OCTDL can support external evaluation under a prespecified harmonised task.
 - Whether OCTID image files and their separate collections can be sourced and licensed for use.
 - Supported OCT file formats and image input contract.
@@ -39,5 +42,4 @@ Each ADR records context, decision, alternatives, consequences, date and status.
 - Compute environment and experiment budget.
 - DVC remote/storage backend and access controls.
 - Frontend framework.
-- Phase 2 scaffold approval and Phase 1 sign-off.
 - Data retention and inference audit policy.

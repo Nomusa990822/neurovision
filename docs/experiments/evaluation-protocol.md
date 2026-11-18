@@ -1,39 +1,66 @@
 # Scientific Evaluation Protocol
 
-**Status:** Proposed protocol. Final details depend on verified dataset metadata and research design.
+**Status:** Proposed; detailed internal evaluation design is specified in [WP13 — Patient-Grouped Cross-Validation and Model-Selection Protocol](wp13-cross-validation-and-model-selection.md).  
+**Scope:** Research evaluation of OCT image classifiers; not clinical validation.
 
 ## 1. Evaluation principles
-Use patient-aware partitions, predefine metrics, preserve a held-out test set and report uncertainty around estimates. Report all classes and relevant failure modes. Do not select a model solely on aggregate accuracy.
+
+- Preserve patient-level independence in every partition.
+- Separate model fitting, model selection, calibration and final evaluation.
+- Predefine metrics, selection criteria and analysis procedures before examining outer evaluation results.
+- Report class-wise performance, support, uncertainty, calibration and failure modes.
+- Preserve original labels and dataset provenance.
+- Record negative, inconclusive and failed experiments.
+- Do not infer clinical utility, safety or diagnostic validity from retrospective dataset performance.
 
 ## 2. Partition roles
-- Training: fit model parameters.
-- Validation: architecture/hyperparameter/model selection.
-- Calibration: fit post-hoc calibration parameters and any prespecified operating thresholds.
-- Internal test: final evaluation after decisions are frozen.
-- External test: independent dataset/site/source not used for model selection.
 
-Where data volume limits separate partitions, justify the design and use nested or cross-validation methods without leaking patient groups. Calibration and test observations must remain disjoint.
+- **Training:** fit model parameters and training-only preprocessing.
+- **Inner validation:** select architecture, hyperparameters, stopping rules and other model-development choices.
+- **Calibration:** fit prespecified probability-calibration parameters using development data only.
+- **Outer evaluation:** estimate internal generalisation using patient groups excluded from all fitting, selection and calibration for that iteration.
+- **External evaluation:** assess a separate, independently governed cohort after model and protocol freeze.
+
+For the OCTDL V4 candidate, WP13 proposes five-fold patient-grouped outer cross-validation with four-fold patient-grouped inner model selection. The existing outer mapping is saved privately and independently verified. It is a candidate allocation; protocol approval and remaining dataset governance gates are still required.
 
 ## 3. Leakage controls
-Group by patient wherever identifiers are available. Audit patient, eye and visit relationships. Check exact duplicates across partitions and use similarity-based review for likely near-duplicates. Persist split manifests and test for group overlap before training.
 
-## 4. Classification metrics
-Report confusion matrix and class-wise precision, recall/sensitivity, specificity and F1. Include accuracy and macro averages. Use ROC-AUC and precision-recall metrics with clearly specified one-vs-rest or averaging conventions. Report support/counts for every class. Provide confidence intervals, preferably using patient-level bootstrap resampling.
+Group all images, eyes and repeated records from a patient in one partition. Audit patient overlap and exact duplicate images across partitions; use documented similarity screening for likely near-duplicates. Keep all learned preprocessing, class weighting, sampling, augmentation policy selection, early stopping, hyperparameter tuning, calibration and threshold selection inside the relevant training/inner-validation data.
 
-## 5. Calibration
-Report Brier score and negative log-likelihood, plus ECE with binning strategy explicitly documented. Provide reliability diagrams and calibration-set details. Compare uncalibrated and calibrated outputs on held-out evaluation data. Do not fit calibration on the final test set.
+A patient-grouped split does not by itself detect duplicate images from different patient IDs or cross-dataset overlap. Record the scope and limitations of each check.
 
-## 6. Uncertainty and selective prediction
-Specify the uncertainty method and whether it estimates epistemic, aleatoric or a proxy. Evaluate association between uncertainty and errors, class-wise behaviour and risk-coverage curves. Report coverage, retained-case error and the threshold-selection procedure. A confidence score alone is not an uncertainty validation.
+## 4. Prediction unit and clustered observations
 
-## 7. Explainability
-Evaluate output alignment and reproducibility. Investigate sensitivity to perturbations, parameter/model randomisation and method choice. Where reference annotations exist, use appropriate localisation metrics. Treat visual plausibility as insufficient evidence of faithfulness.
+When labels are assigned to image records, preserve image-level targets and calculate primary classification metrics at image level. Do not collapse a patient's images into one diagnosis without a separately justified target and aggregation rule. Report image and patient support. Account for within-patient correlation using patient-cluster bootstrap confidence intervals and patient-balanced sensitivity analyses where feasible.
 
-## 8. Robustness and external validity
-Evaluate relevant changes in image quality, source, scanner and class distribution when metadata permits. External results must identify source, population, label definitions and differences from development data. Do not pool external data into training after observing results without defining a new experiment.
+## 5. Classification metrics
 
-## 9. Reporting
-Record model/checkpoint hash, code revision, dataset and split manifest hashes, preprocessing config, random seeds, environment, hardware, metrics, confidence intervals, exclusions and limitations. Report negative and inconclusive findings.
+Report confusion matrix and class-wise precision, recall/sensitivity, specificity and F1. Include macro-F1, weighted F1, balanced accuracy and overall accuracy. Report one-vs-rest ROC-AUC and PR-AUC with explicit averaging conventions and undefined cases. Always show image and patient support per class. The proposed WP13 primary selection criterion is pooled inner out-of-fold image-level macro-F1.
 
-## 10. Interpretation boundary
-All findings describe performance on specified research datasets and protocols. They do not establish clinical utility, safety or diagnostic validity.
+## 6. Calibration
+
+Report multiclass Brier score, negative log-likelihood and ECE with the binning strategy and bin counts. Provide reliability diagrams and class-wise calibration summaries where support permits. Fit calibration parameters only on development data; never use outer evaluation labels to fit or select a calibrator. The proposed initial method is cross-fitted scalar temperature scaling, subject to protocol approval.
+
+## 7. Uncertainty and selective prediction
+
+Specify the uncertainty method and whether it is an uncertainty proxy or an estimate of epistemic/aleatoric uncertainty. Evaluate association between uncertainty and errors, class-wise behaviour and risk-coverage. Report coverage and retained-case error. Select abstention thresholds using development data only. A confidence score alone is not uncertainty validation.
+
+## 8. Explainability
+
+Evaluate reproducibility, perturbation sensitivity, model/parameter randomisation and faithfulness. Use localisation metrics only where suitable reference annotations exist. Visual plausibility alone is not evidence of faithful model reasoning.
+
+## 9. Robustness and external validity
+
+Evaluate image quality, source, scanner, site and class-distribution shifts when metadata permits. External results must identify source, population, label definitions and differences from development data. Freeze the model and protocol before external evaluation. Do not pool external data into training after observing results without defining a new experiment.
+
+## 10. Reproducibility and reporting
+
+Record dataset release and archive hash, split-mapping fingerprint, code revision, environment, model/checkpoint hash, preprocessing, random seeds, hardware, metrics, confidence intervals, calibration, uncertainty, exclusions and limitations. Keep patient identifiers, raw images and row-level patient metadata in access-controlled storage; do not commit them to the public repository or public CI artifacts.
+
+## 11. Interpretation boundary
+
+All findings describe performance on specified research datasets and protocols. They do not establish clinical utility, safety or diagnostic validity. NeuroVision remains a research prototype and is not a clinically validated diagnostic device.
+
+## 12. Detailed protocol
+
+See [WP13 — Patient-Grouped Cross-Validation and Model-Selection Protocol](wp13-cross-validation-and-model-selection.md) for the proposed nested five-fold design, rare-class handling, patient-clustered statistical reporting, calibration, model selection and pre-training approval gates.
