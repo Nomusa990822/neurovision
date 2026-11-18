@@ -159,7 +159,7 @@ def generate_inner_folds(
             "inner_folds": _aggregate(
                 training_groups, {key: value + 1 for key, value in assignment.items()}, INNER_FOLDS
             ),
-            "ra o_coverage_note": "See class_patient_counts; absent classes are not imputed.",
+            "rare_class_coverage_note": "See class_patient_counts; absent classes are not imputed.",
         }
 
     output_csv.parent.mkdir(parents=True, exist_ok=True)
@@ -172,8 +172,18 @@ def generate_inner_folds(
 
     # Re-read the written file and source metadata for an independent integrity pass.
     verified_rows, verified_headers = _read_csv(output_csv)
-    verified_outer = _outer_assignment(outer_rows, outer_headers)
-    verified_labels = _groups_from_rows(label_rows, patient_column, label_column)
+    reread_outer_rows, reread_outer_headers = _read_csv(outer_mapping_csv)
+    reread_label_rows, reread_label_headers = _read_csv(labels_csv)
+    verified_outer = _outer_assignment(reread_outer_rows, reread_outer_headers)
+    verified_patient_column = _required_column(
+        reread_label_headers, ("patient_id",), "patient identifier"
+    )
+    verified_label_column = _required_column(
+        reread_label_headers, ("disease",), "disease label"
+    )
+    verified_labels = _groups_from_rows(
+        reread_label_rows, verified_patient_column, verified_label_column
+    )
     verified_group_ids = {group.patient_id for group in verified_labels}
     inner_patient_column = _required_column(verified_headers, ("patient_id",), "patient identifier")
     outer_fold_column = _required_column(verified_headers, ("outer_fold",), "outer fold")
@@ -205,7 +215,7 @@ def generate_inner_folds(
 
     report: dict[str, Any] = {
         "audit_type": "nested_inner_fold_assignment_integrity",
-        "dataset_image_record_count": len(label_rows),
+        "dataset_image_record_count": len(reread_label_rows),
         "unique_patient_count": len(verified_group_ids),
         "outer_fold_count": len(OUTER_FOLDS),
         "inner_fold_count": INNER_FOLDS,
