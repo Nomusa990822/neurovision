@@ -1,6 +1,6 @@
 # ADR-022: Nested Patient-Grouped Cross-Validation for OCTDL V4
 
-- **Status:** Proposed; approval required before model training
+- **Status:** Accepted by project owner; implementation and training gates remain outstanding
 - **Date:** 2026-11-18
 - **Decision owners:** NeuroVision research project
 
@@ -14,7 +14,7 @@ A deterministic five-fold patient-grouped allocation was generated using a rando
 
 The mapping contains patient identifiers and must remain in access-controlled private storage.
 
-## Decision proposed
+## Decision
 
 Adopt five-fold patient-grouped outer cross-validation for internal evaluation, with four-fold patient-grouped inner cross-validation inside each outer-training pool for model selection.
 
@@ -45,4 +45,4 @@ The full procedure and reporting requirements are specified in [WP13 — Patient
 
 ## Approval conditions
 
-This ADR remains proposed until dataset licence and intended-use review, outstanding duplicate/near-duplicate checks, inner-fold integrity tests, baseline configuration, metrics and statistical reporting are approved. No model training is authorised by this ADR alone.
+The project owner approved this evaluation design on 2026-11-18. This approval accepts the methodology, not the completion of implementation or the remaining pre-training gates. Dataset licence and intended-use review, outstanding duplicate/near-duplicate checks, inner-fold integrity tests, baseline configuration, metrics and statistical reporting artefacts must still be completed or explicitly risk-accepted. No model training is authorised by this ADR alone.
