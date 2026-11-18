@@ -1,7 +1,7 @@
 # Dataset Acquisition and Audit Protocol
 
 **Phase:** 3 — Dataset Acquisition and Governance Audit  
-**Status:** Protocol defined; no dataset acquired or approved  
+**Status:** Protocol defined; OCTDL V4 archive and image audit evidence recorded; governance gates remain open  
 **Applies to:** OCT image datasets and all derived manifests
 
 ## 1. Purpose and entry criteria
@@ -56,7 +56,7 @@ Create one manifest record per acquired dataset release. Required fields:
 | patient_id_available | Boolean/unknown |
 | eye_id_available | Boolean/unknown |
 | scanner_site_metadata | Available scanner/site fields or `not reported` |
-| acquisition_status | Candidate/source_verified/acquired/audited/approved |
+| acquisition_status | candidate/source_verified/acquired/audited/approved |
 | intended_use | Explicit approved or proposed use |
 | limitations | Known caveats and unresolved questions |
 
@@ -135,6 +135,7 @@ The audit report must include expected versus observed counts, corrupt-file coun
 - Reconcile filename-encoded patient IDs against CSV patient IDs.
 - Report image and patient counts by class, and assess rare classes before defining any task.
 - The published cohort is from Yekaterinburg, Russia; do not claim broad geographic or device generalisability from this cohort alone.
+- Track owner-reported acquisition separately from independently verified archive access, hashes and integrity results. See [OCTDL V4 acquisition record](acquisition-record-octdl-v4.md).
 
 ### OCTID
 
@@ -157,12 +158,15 @@ A dataset approved for model development is not automatically approved for exter
 
 ## 10. Current project state
 
-As of protocol adoption:
-- No OCT dataset has been downloaded into the NeuroVision data zones.
-- No archive hash or empirical file inventory exists.
-- No patient-level split has been created or approved.
-- No dataset is approved for training or external evaluation.
+As of 2026-11-18:
+- The original OCTDL V4 ZIP and CSV are stored in the private `neurovision-datasets` repository, outside the public code repository.
+- The archive size (398,564,236 bytes), SHA-256, local Git LFS integrity, ZIP CRC, 2,064-image extraction/inventory, full image decoding, image dimensions and CSV-to-image reconciliation have been verified locally by the project owner.
+- The CSV contains 2,064 image rows and 820 unique patient IDs. One patient has records in both AMD and DME; both records remain in the same patient group.
+- A deterministic five-fold patient-grouped outer assignment was independently re-read and verified locally. The patient mapping remains private.
+- Exact file-level licence scope, CSV hash recording, exact/near-duplicate screening, WP13 nested inner-fold generation and purpose-specific dataset approval remain outstanding.
 - No model training is authorised.
+
+See [OCTDL V4 acquisition record](acquisition-record-octdl-v4.md) for the evidence ledger and outstanding checks.
 
 ## 11. Primary references
 
