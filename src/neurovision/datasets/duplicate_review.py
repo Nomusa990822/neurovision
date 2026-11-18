@@ -123,7 +123,8 @@ def create_duplicate_review_pack(
     if output_dir.exists():
         raise FileExistsError(f"Refusing to overwrite existing review directory: {output_dir}")
 
-    required = set(MANIFEST_FIELDS)
+    # pair_id is generated here; it is not a source candidate-CSV column.
+    required = set(MANIFEST_FIELDS) - {"pair_id"}
     with pairs_csv.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
         if reader.fieldnames is None or not required.issubset(reader.fieldnames):
