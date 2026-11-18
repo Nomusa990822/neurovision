@@ -104,9 +104,7 @@ def allocate_patient_grouped_folds(
 
         for group in ordered:
             group_labels = set(group.image_labels)
-            empty_folds = [
-                fold for fold, count in enumerate(patient_counts) if count == 0
-            ]
+            empty_folds = [fold for fold, count in enumerate(patient_counts) if count == 0]
             candidate_folds = empty_folds or list(range(n_splits))
             candidates: list[tuple[float, int]] = []
 
@@ -171,16 +169,10 @@ def validate_patient_grouped_assignment(
     actual = set(assignment)
     if expected != actual:
         errors.append("assignment patient identifiers do not match input groups")
-    if any(
-        not isinstance(fold, int) or isinstance(fold, bool)
-        for fold in assignment.values()
-    ):
+    if any(not isinstance(fold, int) or isinstance(fold, bool) for fold in assignment.values()):
         errors.append("fold identifiers must be integers")
     if any(fold < 0 or fold >= n_splits for fold in assignment.values()):
         errors.append("fold identifiers are outside the configured range")
-    if any(
-        not any(fold == index for fold in assignment.values())
-        for index in range(n_splits)
-    ):
+    if any(not any(fold == index for fold in assignment.values()) for index in range(n_splits)):
         errors.append("one or more folds are empty")
     return errors
