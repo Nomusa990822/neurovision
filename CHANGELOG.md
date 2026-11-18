@@ -4,6 +4,8 @@ All notable project changes are recorded here. Releases do not imply clinical va
 
 ## [Unreleased]
 
+- Add blinded near-duplicate contact-sheet generation and a private review register for WP14; replace deprecated Pillow pixel access.
+
 ### Added
 - NeuroVision project charter, research objectives, requirements, architecture and governance records.
 - Dataset source desk review and patient-level leakage safeguards.
