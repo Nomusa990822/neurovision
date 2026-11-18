@@ -38,7 +38,7 @@ def difference_hash(path: Path) -> int:
         ) from error
     with image_module.open(path) as source:
         image = source.convert("L").resize((9, 8), image_module.Resampling.LANCZOS)
-        pixels = list(image.getdata())
+        pixels = list(image.get_flattened_data())
     value = 0
     for row in range(8):
         offset = row * 9

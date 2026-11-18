@@ -31,6 +31,8 @@ jobs:
         run: uv lock --check --python 3.12
       - name: Install locked project and development dependencies
         run: uv sync --locked --all-groups
+      - name: Install image-test dependency
+        run: uv pip install --python .venv/bin/python Pillow==12.2.0
       - name: Run unit tests with coverage
         run: uv run pytest --cov=neurovision --cov-report=term-missing
       - name: Run Ruff lint
