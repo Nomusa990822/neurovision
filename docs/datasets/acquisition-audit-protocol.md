@@ -1,7 +1,7 @@
 # Dataset Acquisition and Audit Protocol
 
 **Phase:** 3 — Dataset Acquisition and Governance Audit  
-**Status:** Protocol defined; OCTDL V4 acquisition reported by owner but not independently verified  
+**Status:** Protocol defined; OCTDL V4 archive and image audit evidence recorded; governance gates remain open  
 **Applies to:** OCT image datasets and all derived manifests
 
 ## 1. Purpose and entry criteria
@@ -158,13 +158,12 @@ A dataset approved for model development is not automatically approved for exter
 
 ## 10. Current project state
 
-As of 2026-11-17:
-- The project owner reports downloading OCTDL V4's `OCTDL.zip` and `OCTDL_labels.csv` and storing them in the project's Google Drive dataset folder.
-- The current project workspace cannot independently access those Drive files or the earlier conversation attachments.
-- No archive/CSV byte sizes or SHA-256 hashes have been independently recorded.
-- No archive CRC/integrity result or extracted image inventory exists.
-- No patient-level split has been created or approved.
-- No dataset is approved for training or external evaluation.
+As of 2026-11-18:
+- The original OCTDL V4 ZIP and CSV are stored in the private `neurovision-datasets` repository, outside the public code repository.
+- The archive size (398,564,236 bytes), SHA-256, local Git LFS integrity, ZIP CRC, 2,064-image extraction/inventory, full image decoding, image dimensions and CSV-to-image reconciliation have been verified locally by the project owner.
+- The CSV contains 2,064 image rows and 820 unique patient IDs. One patient has records in both AMD and DME; both records remain in the same patient group.
+- A deterministic five-fold patient-grouped outer assignment was independently re-read and verified locally. The patient mapping remains private.
+- Exact file-level licence scope, CSV hash recording, exact/near-duplicate screening, WP13 nested inner-fold generation and purpose-specific dataset approval remain outstanding.
 - No model training is authorised.
 
 See [OCTDL V4 acquisition record](acquisition-record-octdl-v4.md) for the evidence ledger and outstanding checks.
