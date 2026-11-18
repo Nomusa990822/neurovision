@@ -24,9 +24,7 @@ def test_all_patients_are_assigned_once_and_folds_are_nonempty() -> None:
     )
 
     assert set(assignment) == {group.patient_id for group in groups}
-    assert validate_patient_grouped_assignment(
-        groups, assignment, n_splits=4
-    ) == []
+    assert validate_patient_grouped_assignment(groups, assignment, n_splits=4) == []
     assert {assignment[group.patient_id] for group in groups} == {0, 1, 2, 3}
 
 
