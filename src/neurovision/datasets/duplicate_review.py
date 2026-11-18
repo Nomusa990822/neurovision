@@ -40,14 +40,14 @@ def _write_private(path: Path, content: str | bytes) -> None:
     flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
     descriptor = os.open(path, flags, stat.S_IRUSR | stat.S_IWUSR)
     mode = "wb" if isinstance(content, bytes) else "w"
-    kwargs: dict[str, Any] = {} if mode == "wb" else {"encoding": "utf-8", "newline": "\\n"}
+    kwargs: dict[str, Any] = {} if mode == "wb" else {"encoding": "utf-8", "newline": "\n"}
     with os.fdopen(descriptor, mode, **kwargs) as handle:
         handle.write(content)
     path.chmod(0o600)
 
 
 def _resolve_image(file_name: str, index: dict[str, list[Path]]) -> Path:
-    stem = Path(file_name.replace("\\\\", "/")).stem.casefold()
+    stem = Path(file_name.replace("\\", "/")).stem.casefold()
     matches = index.get(stem, [])
     if len(matches) != 1:
         raise ValueError(
@@ -72,8 +72,12 @@ def _make_contact_sheet(
     page = image_module.new("RGB", (page_width, page_height), "white")
     draw = draw_module.Draw(page)
     font = font_module.load_default()
-    draw.text((35, 25), f"NEUROVISION | BLINDED DUPLICATE REVIEW | PAGE {page_number:03d}",
-              fill="black", font=font)
+    draw.text(
+        (35, 25),
+        f"NEUROVISION | BLINDED DUPLICATE REVIEW | PAGE {page_number:03d}",
+        fill="black",
+        font=font,
+    )
 
     for slot, pair in enumerate(pairs):
         row_top = 75 + slot * 285
@@ -153,7 +157,7 @@ def create_duplicate_review_pack(
     try:
         manifest_buffer = StringIO()
         manifest_writer = csv.DictWriter(
-            manifest_buffer, fieldnames=MANIFEST_FIELDS, lineterminator="\\n"
+            manifest_buffer, fieldnames=MANIFEST_FIELDS, lineterminator="\n"
         )
         manifest_writer.writeheader()
         manifest_writer.writerows(selected)
@@ -161,7 +165,7 @@ def create_duplicate_review_pack(
 
         register_buffer = StringIO()
         register_writer = csv.DictWriter(
-            register_buffer, fieldnames=REGISTER_FIELDS, lineterminator="\\n"
+            register_buffer, fieldnames=REGISTER_FIELDS, lineterminator="\n"
         )
         register_writer.writeheader()
         register_writer.writerows(
@@ -179,13 +183,8 @@ def create_duplicate_review_pack(
         for offset in range(0, len(selected), pairs_per_sheet):
             page_count += 1
             batch = selected[offset : offset + pairs_per_sheet]
-            page_bytes = _make_contact_sheet(
-                batch, image_index, page_count, pairs_per_sheet
-            )
-            _write_private(
-                output_dir / f"contact-sheet-{page_count:03d}.png",
-                page_bytes,
-            )
+            page_bytes = _make_contact_sheet(batch, image_index, page_count, pairs_per_sheet)
+            _write_private(output_dir / f"contact-sheet-{page_count:03d}.png", page_bytes)
 
         summary = {
             "audit_type": "blinded_near_duplicate_visual_review_pack",
@@ -199,7 +198,7 @@ def create_duplicate_review_pack(
         }
         _write_private(
             output_dir / "review-pack-summary.json",
-            json.dumps(summary, indent=2, sort_keys=True) + "\\n",
+            json.dumps(summary, indent=2, sort_keys=True) + "\n",
         )
     except Exception:
         for child in output_dir.iterdir():
