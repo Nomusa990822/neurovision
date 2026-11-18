@@ -1,4 +1,5 @@
 """Exact and perceptual near-duplicate screening for image datasets."""
+
 from __future__ import annotations
 
 import argparse
@@ -133,8 +134,7 @@ def run_duplicate_screen(
             "patient_count": len({item["patient_id"] for item in group}),
             "cross_patient": len({item["patient_id"] for item in group}) > 1,
             "records": [
-                {key: item[key] for key in ("file_name", "patient_id", "disease")}
-                for item in group
+                {key: item[key] for key in ("file_name", "patient_id", "disease")} for item in group
             ],
         }
         for digest, group in sorted(exact.items())
@@ -186,8 +186,14 @@ def run_duplicate_screen(
         ],
     }
     fields = [
-        "left_file_name", "right_file_name", "left_patient_id", "right_patient_id",
-        "left_disease", "right_disease", "hamming_distance", "cross_patient",
+        "left_file_name",
+        "right_file_name",
+        "left_patient_id",
+        "right_patient_id",
+        "left_disease",
+        "right_disease",
+        "hamming_distance",
+        "cross_patient",
     ]
     buffer = StringIO()
     writer = csv.DictWriter(buffer, fieldnames=fields, lineterminator="\n")
@@ -214,14 +220,20 @@ def main() -> None:
     parser.add_argument("--max-hamming-distance", type=int, default=6)
     args = parser.parse_args()
     report = run_duplicate_screen(
-        args.labels_csv, args.images_dir, args.report_json, args.pairs_csv,
+        args.labels_csv,
+        args.images_dir,
+        args.report_json,
+        args.pairs_csv,
         args.max_hamming_distance,
     )
     summary = {
         key: report[key]
         for key in (
-            "audit_type", "image_record_count", "labels_csv_sha256",
-            "exact_duplicate_group_count", "exact_cross_patient_group_count",
+            "audit_type",
+            "image_record_count",
+            "labels_csv_sha256",
+            "exact_duplicate_group_count",
+            "exact_cross_patient_group_count",
             "near_duplicate_candidate_pair_count",
             "near_duplicate_cross_patient_pair_count",
         )
