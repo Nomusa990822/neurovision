@@ -28,41 +28,28 @@ class PatientGroup:
             raise ValueError("image labels must not be empty")
 
 
-def _assignment_score(
-    groups: Sequence[PatientGroup],
-    assignment: Mapping[str, int],
+def _score_counts(
+    patient_counts: Sequence[int],
+    image_counts: Sequence[int],
+    class_patient_counts: Mapping[str, Sequence[int]],
+    class_image_counts: Mapping[str, Sequence[int]],
     n_splits: int,
-    labels: Sequence[str],
 ) -> float:
-    """Score balance across patient counts, image counts and class counts."""
-    patient_counts = [0] * n_splits
-    image_counts = [0] * n_splits
-    class_patients = {label: [0] * n_splits for label in labels}
-    class_images = {label: [0] * n_splits for label in labels}
-
-    for group in groups:
-        fold = assignment[group.patient_id]
-        patient_counts[fold] += 1
-        image_counts[fold] += len(group.image_labels)
-        for label in set(group.image_labels):
-            class_patients[label][fold] += 1
-        for label in group.image_labels:
-            class_images[label][fold] += 1
-
-    def normalised_deviation(values: Sequence[int]) -> float:
+    """Score current fold counters in constant time with respect to group count."""
+    def deviation(values: Sequence[int]) -> float:
         total = sum(values)
         if total == 0:
             return 0.0
         target = total / n_splits
         return sum(((value - target) / max(target, 1.0)) ** 2 for value in values)
 
-    score = normalised_deviation(patient_counts)
-    score += normalised_deviation(image_counts)
-    for label in labels:
-        score += 2.0 * normalised_deviation(class_patients[label])
-        score += normalised_deviation(class_images[label])
-        if sum(class_patients[label]) >= n_splits:
-            score += 4.0 * sum(value == 0 for value in class_patients[label])
+    score = deviation(patient_counts) + deviation(image_counts)
+    for label in class_patient_counts:
+        values = class_patient_counts[label]
+        score += 2.0 * deviation(values)
+        score += deviation(class_image_counts[label])
+        if sum(values) >= n_splits:
+            score += 4.0 * sum(value == 0 for value in values)
     return score
 
 
@@ -109,29 +96,59 @@ def allocate_patient_grouped_folds(
             ),
         )
         assignment: dict[str, int] = {}
-        fold_group_counts = [0] * n_splits
+        patient_counts = [0] * n_splits
+        image_counts = [0] * n_splits
+        class_patient_counts = {label: [0] * n_splits for label in labels}
+        class_image_counts = {label: [0] * n_splits for label in labels}
 
         for group in ordered:
-            available_empty = [
-                fold for fold, count in enumerate(fold_group_counts) if count == 0
+            group_labels = set(group.image_labels)
+            empty_folds = [
+                fold for fold, count in enumerate(patient_counts) if count == 0
             ]
-            candidate_folds = available_empty or list(range(n_splits))
-            candidate_scores: list[tuple[float, int]] = []
+            candidate_folds = empty_folds or list(range(n_splits))
+            candidates: list[tuple[float, int]] = []
 
             for fold in candidate_folds:
-                assignment[group.patient_id] = fold
-                partial_groups = [item for item in ordered if item.patient_id in assignment]
-                score = _assignment_score(
-                    partial_groups, assignment, n_splits, labels
+                patient_counts[fold] += 1
+                image_counts[fold] += len(group.image_labels)
+                for label in group_labels:
+                    class_patient_counts[label][fold] += 1
+                for label in group.image_labels:
+                    class_image_counts[label][fold] += 1
+
+                score = _score_counts(
+                    patient_counts,
+                    image_counts,
+                    class_patient_counts,
+                    class_image_counts,
+                    n_splits,
                 )
-                candidate_scores.append((score, fold))
-                del assignment[group.patient_id]
+                candidates.append((score, fold))
 
-            _, selected_fold = min(candidate_scores)
+                patient_counts[fold] -= 1
+                image_counts[fold] -= len(group.image_labels)
+                for label in group_labels:
+                    class_patient_counts[label][fold] -= 1
+                for label in group.image_labels:
+                    class_image_counts[label][fold] -= 1
+
+            _, selected_fold = min(candidates)
             assignment[group.patient_id] = selected_fold
-            fold_group_counts[selected_fold] += 1
+            patient_counts[selected_fold] += 1
+            image_counts[selected_fold] += len(group.image_labels)
+            for label in group_labels:
+                class_patient_counts[label][selected_fold] += 1
+            for label in group.image_labels:
+                class_image_counts[label][selected_fold] += 1
 
-        score = _assignment_score(groups, assignment, n_splits, labels)
+        score = _score_counts(
+            patient_counts,
+            image_counts,
+            class_patient_counts,
+            class_image_counts,
+            n_splits,
+        )
         if score < best_score:
             best_score = score
             best_assignment = dict(assignment)
