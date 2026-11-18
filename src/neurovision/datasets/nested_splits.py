@@ -135,7 +135,9 @@ def generate_inner_folds(
     output_rows: list[dict[str, int | str]] = []
     summaries: dict[str, Any] = {}
     for outer_fold in OUTER_FOLDS:
-        training_ids = sorted(patient_id for patient_id, fold in outer.items() if fold != outer_fold)
+        training_ids = sorted(
+            patient_id for patient_id, fold in outer.items() if fold != outer_fold
+        )
         training_groups = [group_by_id[patient_id] for patient_id in training_ids]
         assignment = allocate_patient_grouped_folds(
             training_groups,
@@ -167,7 +169,10 @@ def generate_inner_folds(
     with output_csv.open("x", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=["outer_fold", "patient_id", "inner_fold"])
         writer.writeheader()
-        writer.writerows(sorted(output_rows, key=lambda row: (row["outer_fold"], row["patient_id"])))
+        ordered_rows = sorted(
+            output_rows, key=lambda row: (row["outer_fold"], row["patient_id"])
+        )
+        writer.writerows(ordered_rows)
     os.chmod(output_csv, 0o600)
 
     # Re-read the written file and source metadata for an independent integrity pass.
