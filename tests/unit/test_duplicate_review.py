@@ -22,25 +22,42 @@ def test_review_pack_is_blinded_and_private(tmp_path) -> None:
 
     pairs = tmp_path / "pairs.csv"
     fields = [
-        "left_file_name", "right_file_name", "left_patient_id",
-        "right_patient_id", "left_disease", "right_disease",
-        "hamming_distance", "cross_patient",
+        "left_file_name",
+        "right_file_name",
+        "left_patient_id",
+        "right_patient_id",
+        "left_disease",
+        "right_disease",
+        "hamming_distance",
+        "cross_patient",
     ]
     with pairs.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
-        writer.writerow({
-            "left_file_name": "a.jpg", "right_file_name": "b.jpg",
-            "left_patient_id": "PRIVATE-1", "right_patient_id": "PRIVATE-2",
-            "left_disease": "AMD", "right_disease": "DME",
-            "hamming_distance": 0, "cross_patient": "True",
-        })
-        writer.writerow({
-            "left_file_name": "a.jpg", "right_file_name": "b.jpg",
-            "left_patient_id": "PRIVATE-1", "right_patient_id": "PRIVATE-2",
-            "left_disease": "AMD", "right_disease": "DME",
-            "hamming_distance": 3, "cross_patient": "True",
-        })
+        writer.writerow(
+            {
+                "left_file_name": "a.jpg",
+                "right_file_name": "b.jpg",
+                "left_patient_id": "PRIVATE-1",
+                "right_patient_id": "PRIVATE-2",
+                "left_disease": "AMD",
+                "right_disease": "DME",
+                "hamming_distance": 0,
+                "cross_patient": "True",
+            }
+        )
+        writer.writerow(
+            {
+                "left_file_name": "a.jpg",
+                "right_file_name": "b.jpg",
+                "left_patient_id": "PRIVATE-1",
+                "right_patient_id": "PRIVATE-2",
+                "left_disease": "AMD",
+                "right_disease": "DME",
+                "hamming_distance": 3,
+                "cross_patient": "True",
+            }
+        )
 
     output = tmp_path / "review"
     result = create_duplicate_review_pack(pairs, images, output)
