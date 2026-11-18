@@ -173,11 +173,13 @@ def run_duplicate_screen(
         "perceptual_method": "64-bit difference hash; grayscale 9x8 Lanczos resize",
         "max_hamming_distance_inclusive": max_hamming_distance,
         "near_duplicate_candidate_pair_count": len(pairs),
-        "near_duplicate_cross_patient_pair_count": sum(int(item["cross_patient"]) for item in pairs),
+        "near_duplicate_cross_patient_pair_count": sum(
+            int(item["cross_patient"]) for item in pairs
+        ),
         "exact_duplicate_groups": exact_groups,
         "limitations": [
             "Perceptual matches are candidates for manual review, not proof of duplicate identity.",
-            "Difference hash can miss transformed duplicates and flag visually similar distinct scans.",
+            "Difference hash can miss transformed duplicates and flag visually similar scans.",
             "The audit does not establish patient identity or clinical equivalence.",
             "No image, label or source file is modified or deleted.",
             "Reports contain private filenames and patient identifiers; keep them outside Git.",
