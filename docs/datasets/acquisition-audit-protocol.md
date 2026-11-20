@@ -1,7 +1,7 @@
 # Dataset Acquisition and Audit Protocol
 
 **Phase:** 3 — Dataset Acquisition and Governance Audit  
-**Status:** Protocol defined; OCTDL V4 archive/image audit and nested split integrity evidence recorded; governance gates remain open  
+**Status:** Protocol defined; OCTDL V4 archive/image and WP13 inner-fold audits recorded; WP14 duplicate review ongoing and governance gates remain open  
 **Applies to:** OCT image datasets and all derived manifests
 
 ## 1. Purpose and entry criteria
@@ -154,7 +154,15 @@ Approval is purpose-specific and must state:
 
 A dataset approved for model development is not automatically approved for external validation or redistribution.
 
-## 10. Current project state
+## 10. Duplicate-screening interpretation and split quarantine
+
+Perceptual-hash distances are candidate-generation signals, not proof of duplicate identity. Computational verification must distinguish original-file byte identity from decoded-pixel identity and must compare dimensions as well as decoded pixel hashes. A visually reviewed pair must retain its disposition, confidence and reviewer notes; inconclusive cases remain unresolved.
+
+For OCTDL V4, all 354 shortlisted pairs were computationally examined. Fifty-four pairs had equal dimensions and identical decoded RGB pixel arrays (47 cross-patient and 7 same-patient); no original files were byte-identical. All 54 exact-pixel matches occurred at dHash distance zero. The 87 zero-distance candidates received blinded visual review. A further 231 cross-patient candidates at distances 1–6 have a three-pair-per-sheet review pack; visual review remains ongoing.
+
+The 47 cross-patient exact-pixel relationships form 22 connected components involving 49 patients. Because 39 of those relationships cross folds in the initial candidate outer assignment, that mapping is quarantined and must not be used for model evaluation. Do not merge patient identifiers based only on image similarity. Any replacement split must assign accepted duplicate-linked components as indivisible groups, retain the original patient identities, be independently verified, and trigger regeneration/re-verification of the WP13 inner folds.
+
+## 11. Current project state
 
 As of 2026-11-18:
 - The original OCTDL V4 ZIP and CSV are stored in the private neurovision-datasets repository, outside the public code repository.
@@ -162,13 +170,13 @@ As of 2026-11-18:
 - The CSV contains 2,064 image rows and 820 unique patient IDs. One patient has records in both AMD and DME; both records remain in the same patient group.
 - A deterministic five-fold patient-grouped outer assignment was independently re-read and verified locally. The patient mapping remains private.
 - The WP13 nested inner-fold mapping contains 3,280 assignments across 820 patients and five outer iterations. Independent re-read verification passed; the mapping remains private.
-- WP14 duplicate-screening implementation is in development. Data-specific execution and manual candidate review remain pending.
+- WP14 data-specific computational screening is complete for the 354-pair candidate shortlist; the 87 zero-distance candidates received blinded visual review. The 231-pair cross-patient nonzero-distance visual review is ongoing. The initial outer mapping is quarantined due to cross-fold exact-pixel relationships.
 - Exact file-level licence scope, purpose-specific dataset approval and CSV SHA-256 recording remain open.
 - No model training is authorised.
 
 See the OCTDL V4 acquisition record and WP14 duplicate-screening protocol for the evidence ledger and outstanding checks.
 
-## 11. Primary references
+## 12. Primary references
 
 - Kermany et al. (2018), Identifying Medical Diagnoses and Treatable Diseases by Image-Based Deep Learning, Cell. https://doi.org/10.1016/j.cell.2018.02.010
 - Kermany OCT2017 Mendeley Version 3. https://doi.org/10.17632/rscbjbr9sj.3
