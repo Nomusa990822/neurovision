@@ -4,6 +4,15 @@ All notable project changes are recorded here. Releases do not imply clinical va
 
 ## [Unreleased]
 
+### Dataset audit update — 2026-11-20
+- Examined all 354 OCTDL V4 perceptual-hash candidate pairs locally; 354/354 completed without processing errors.
+- Found 54 dimension-aware exact decoded-RGB pixel matches: 47 cross-patient and 7 same-patient; no byte-identical files and no additional exact-pixel matches at dHash distances 1–6.
+- Completed blinded visual review of 87 zero-distance candidates (44 contact sheets).
+- Identified 22 connected components involving 49 patients in the cross-patient exact-pixel network; 19 components span multiple folds. Quarantined the initial five-fold mapping because 39 cross-patient exact-pixel relationships cross fold boundaries.
+- Generated a separate blinded pack for 231 cross-patient nonzero-distance candidates (dHash 1–6), with 77 contact sheets and three pairs per sheet. Visual review is ongoing; no dispositions are claimed yet.
+- Added [WP14 duplicate-screening report](docs/experiments/wp14-duplicate-screening.md). Patient-linked manifests, filenames, hashes and mappings remain private.
+
+
 - Add blinded near-duplicate contact-sheet generation and a private review register for WP14; replace deprecated Pillow pixel access.
 
 ### Added

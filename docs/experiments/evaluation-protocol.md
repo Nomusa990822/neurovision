@@ -21,11 +21,11 @@
 - **Outer evaluation:** estimate internal generalisation using patient groups excluded from all fitting, selection and calibration for that iteration.
 - **External evaluation:** assess a separate, independently governed cohort after model and protocol freeze.
 
-For the OCTDL V4 candidate, WP13 proposes five-fold patient-grouped outer cross-validation with four-fold patient-grouped inner model selection. The existing outer mapping is saved privately and independently verified. It is a candidate allocation; protocol approval and remaining dataset governance gates are still required.
+For the OCTDL V4 candidate, WP13 specifies five-fold patient-grouped outer cross-validation with four-fold patient-grouped inner model selection. The initial outer mapping and its corresponding inner-fold mapping were generated and independently verified locally, but the outer mapping is now quarantined after WP14 identified 39 cross-patient exact-pixel relationships crossing its fold boundaries. It must not be used for model evaluation. Any replacement outer mapping must be independently verified, and all corresponding WP13 inner folds must be regenerated and re-verified before training.
 
 ## 3. Leakage controls
 
-Group all images, eyes and repeated records from a patient in one partition. Audit patient overlap and exact duplicate images across partitions; use documented similarity screening for likely near-duplicates. Keep all learned preprocessing, class weighting, sampling, augmentation policy selection, early stopping, hyperparameter tuning, calibration and threshold selection inside the relevant training/inner-validation data.
+Group all images, eyes and repeated records from a patient in one partition. Audit patient overlap and exact duplicate images across partitions; use documented similarity screening for likely near-duplicates. For OCTDL V4, see [WP14 duplicate-screening report](wp14-duplicate-screening.md): the initial outer mapping is quarantined, and the 231-pair nonzero-distance cross-patient visual review remains ongoing. Keep all learned preprocessing, class weighting, sampling, augmentation policy selection, early stopping, hyperparameter tuning, calibration and threshold selection inside the relevant training/inner-validation data.
 
 A patient-grouped split does not by itself detect duplicate images from different patient IDs or cross-dataset overlap. Record the scope and limitations of each check.
 
