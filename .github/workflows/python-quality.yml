@@ -35,6 +35,10 @@ jobs:
         run: uv pip install --python .venv/bin/python Pillow==12.2.0
       - name: Run unit tests with coverage
         run: uv run pytest --cov=neurovision --cov-report=term-missing
+      - name: Diagnose Ruff import ordering
+        run: |
+          uv run ruff check --select I --fix scripts/audits/nonzero_candidate_investigation.py
+          git diff -- scripts/audits/nonzero_candidate_investigation.py
       - name: Run Ruff lint
         run: uv run ruff check .
       - name: Verify Ruff formatting
