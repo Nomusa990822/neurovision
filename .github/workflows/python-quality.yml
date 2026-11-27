@@ -33,6 +33,12 @@ jobs:
         run: uv sync --locked --all-groups
       - name: Install image-test dependency
         run: uv pip install --python .venv/bin/python Pillow==12.2.0
+      - name: Refresh PR branch before temporary formatting commit
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          git fetch origin "$GITHUB_HEAD_REF" main
+          git checkout -B "$GITHUB_HEAD_REF" FETCH_HEAD
+          git merge --no-edit origin/main
       - name: Format audit script for review
         run: uv run ruff format scripts/audits/nonzero_candidate_investigation.py
       - name: Commit temporary formatter output
