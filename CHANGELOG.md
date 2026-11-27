@@ -4,16 +4,13 @@ All notable project changes are recorded here. Releases do not imply clinical va
 
 ## [Unreleased]
 
-### Dataset audit update — 2026-11-20
-- Examined all 354 OCTDL V4 perceptual-hash candidate pairs locally; 354/354 completed without processing errors.
-- Found 54 dimension-aware exact decoded-RGB pixel matches: 47 cross-patient and 7 same-patient; no byte-identical files and no additional exact-pixel matches at dHash distances 1–6.
-- Completed blinded visual review of 87 zero-distance candidates (44 contact sheets).
-- Identified 22 connected components involving 49 patients in the cross-patient exact-pixel network; 19 components span multiple folds. Quarantined the initial five-fold mapping because 39 cross-patient exact-pixel relationships cross fold boundaries.
-- Generated a separate blinded pack for 231 cross-patient nonzero-distance candidates (dHash 1–6), with 77 contact sheets and three pairs per sheet. Visual review is ongoing; no dispositions are claimed yet.
-- Added [WP14 duplicate-screening report](docs/experiments/wp14-duplicate-screening.md). Patient-linked manifests, filenames, hashes and mappings remain private.
-
-
-- Add blinded near-duplicate contact-sheet generation and a private review register for WP14; replace deprecated Pillow pixel access.
+### Dataset audit update — 2026-11-27
+- Completed blinded visual review of all 231 cross-patient nonzero-dHash candidates (dHash 1–6): 10 visually flagged as potential duplicates and 221 classified as similar but distinct; all received High-confidence visual dispositions. These are screening judgments, not duplicate confirmations.
+- Executed NV-DUP-AUDIT-03 workflow run [#45999286898](https://github.com/Nomusa990822/neurovision-datasets/actions/runs/45999286898). Private repository/LFS checkout, pinned code checkout, dependency setup, required-input checks, archive SHA-256 verification and safe extraction passed.
+- The initial computational run did not process any of its 10 selected candidates: the private manifest stores extensionless image stems while the audit resolver expected archive filenames. The run correctly failed with 10 path-resolution errors; no computational duplicate findings are claimed.
+- Added a safe, ambiguity-rejecting image path resolver that supports exact filenames and unique extensionless stems, with synthetic unit tests. The corrected computational audit remains pending successful CI validation and a new private workflow run.
+- The original dataset, patient identities and quarantined patient-to-fold mapping remain unchanged. Model training and evaluation remain blocked pending duplicate-aware grouping, provenance review and dataset/split approval.
+- Earlier OCTDL V4 duplicate-screening evidence and quarantine rationale are recorded in [WP14 duplicate-screening report](docs/experiments/wp14-duplicate-screening.md). Patient-linked manifests, filenames, hashes and mappings remain private.
 
 ### Added
 - NeuroVision project charter, research objectives, requirements, architecture and governance records.
@@ -28,6 +25,7 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - OCTDL V4 acquisition record updated with verified archive SHA-256/LFS integrity, ZIP CRC, image inventory/decoding, dimensions, CSV reconciliation and patient-group audit evidence.
 - WP13 nested inner-fold generator, independent re-read integrity checks, owner-only output handling and synthetic tests.
 - WP14 exact SHA-256 duplicate grouping and 64-bit perceptual difference-hash candidate screening, with private report outputs and synthetic tests.
+- Safe extensionless image-path resolution for private duplicate-audit manifests, with synthetic tests.
 
 ### Changed
 - Dataset register pins OCTDL Mendeley Version 4 and records the Kermany V3 terms ambiguity and OCTID source limitations.
@@ -43,9 +41,9 @@ All notable project changes are recorded here. Releases do not imply clinical va
 - WP13 inner-fold mapping was generated and independently re-read locally: 3,280 assignments, 820 unique patients, five outer iterations, four nonempty inner folds per iteration, and no corresponding outer-test patient in inner mappings. Mapping SHA-256: b01b94536ad2823d213962d0a124b40562567b04822e297a4aa0c3b348cc4f34.
 
 ### Pending
-- Execute WP14 exact/near-duplicate screening, inspect candidate pairs and record dispositions.
+- Complete computational investigation of the 10 visually flagged nonzero-dHash candidates and review its findings against image provenance.
 - Complete exact file-level licence review and purpose-specific dataset approval.
-- Complete any remaining dataset-level integrity and split approvals; model training remains blocked until all gates are approved.
+- Complete remaining dataset-level integrity and split approvals; model training remains blocked until all gates are approved.
 
 ## [0.1.0] - Unreleased
 

@@ -23,6 +23,8 @@ from scipy.ndimage import shift as ndi_shift
 from skimage.metrics import structural_similarity
 from skimage.registration import phase_cross_correlation
 
+from neurovision.datasets.image_paths import build_image_index, resolve_image_path
+
 TARGET_PAIRS = {
     "PAIR-NZ-0021",
     "PAIR-NZ-0043",
@@ -47,34 +49,6 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
-
-
-def safe_index(root: Path) -> dict[str, list[Path]]:
-    root = root.resolve()
-    result: dict[str, list[Path]] = {}
-    for path in root.rglob("*"):
-        if path.is_file():
-            resolved = path.resolve()
-            try:
-                resolved.relative_to(root)
-            except ValueError as exc:
-                raise RuntimeError("Image path escaped extracted root") from exc
-            result.setdefault(path.name, []).append(resolved)
-    return result
-
-
-def resolve_image(filename: str, root: Path, index: dict[str, list[Path]]) -> Path:
-    relative = Path(filename)
-    if relative.is_absolute() or ".." in relative.parts:
-        raise ValueError("Unsafe manifest image path")
-    direct = (root / relative).resolve()
-    direct.relative_to(root.resolve())
-    if direct.is_file():
-        return direct
-    matches = index.get(relative.name, [])
-    if len(matches) != 1:
-        raise FileNotFoundError("Image missing or ambiguous in extracted archive")
-    return matches[0]
 
 
 def read_rgb(path: Path) -> tuple[np.ndarray, dict[str, object]]:
@@ -215,8 +189,8 @@ def feature_metrics(a: np.ndarray, b: np.ndarray) -> dict[str, object]:
 def analyse(
     row: dict[str, str], review: dict[str, str], root: Path, index: dict[str, list[Path]]
 ) -> dict[str, object]:
-    left_path = resolve_image(row["left_file_name"], root, index)
-    right_path = resolve_image(row["right_file_name"], root, index)
+    left_path = resolve_image_path(row["left_file_name"], root, index)
+    right_path = resolve_image_path(row["right_file_name"], root, index)
     left_rgb, left_meta = read_rgb(left_path)
     right_rgb, right_meta = read_rgb(right_path)
     same_dimensions = left_rgb.shape == right_rgb.shape
@@ -356,7 +330,7 @@ def main() -> int:
     missing = TARGET_PAIRS - set(manifest.index) | (TARGET_PAIRS - set(reviews.index))
     if missing:
         raise SystemExit("One or more target pair IDs are missing")
-    index = safe_index(root)
+    index = build_image_index(root)
     results = []
     errors = []
     for pair_id in sorted(TARGET_PAIRS):
