@@ -74,7 +74,7 @@ jobs:
             scikit-image==0.25.2 \
             opencv-python-headless==4.11.0.86
       - name: Run synthetic end-to-end audit tests
-        run: python -m pytest -q tests/audits/test_nonzero_candidate_investigation.py
+        run: python -m pytest -q scripts/audits/tests/test_nonzero_candidate_investigation.py
 
   docker-smoke:
     name: Docker non-root smoke test
