@@ -54,7 +54,7 @@ Use five outer folds for internal evaluation. In outer iteration k:
 
 Repeat for all five outer folds. Each patient is in exactly one outer evaluation fold. The five outer evaluation outputs form the out-of-fold (OOF) prediction set.
 
-The existing five-fold mapping is the proposed outer assignment. Inner folds must be generated deterministically from only the outer-training patients, using a documented seed and a patient-grouped, class-aware allocation method. Inner fold assignments must be regenerated separately for each outer iteration and must never include patients from the corresponding outer evaluation fold.
+The original five-fold mapping described in this protocol is quarantined following WP14 duplicate-screening findings. A replacement outer assignment must be created and verified before this nested evaluation design is executed. Any corresponding inner folds must be regenerated from the replacement outer-training pools. Inner folds must be generated deterministically from only the outer-training patients, using a documented seed and a patient-grouped, class-aware allocation method. Inner fold assignments must be regenerated separately for each outer iteration and must never include patients from the corresponding outer evaluation fold.
 
 ### 3.1 Inner-fold feasibility and rare classes
 
@@ -227,6 +227,6 @@ Approval of this protocol does not constitute dataset licence approval or clinic
 
 ## 15. Current status
 
-**Approved protocol; data-specific inner-fold execution pending.** The project owner approved the nested patient-grouped evaluation design on 2026-11-18. A deterministic generator, independent source/mapping re-read checks and synthetic tests have been implemented. The generator has not yet been run against the private OCTDL files, so no data-specific inner-fold assignment or integrity result is claimed. No model training or performance evaluation is claimed. Dataset governance and audit gates, review of the generated aggregate class support, and the baseline experiment configuration remain outstanding.
+**Protocol approved; original data-specific fold mappings quarantined pending WP14.** The project owner approved the nested patient-grouped evaluation design on 2026-11-18. The generator was executed against private OCTDL files and independent re-read verification passed for 3,280 assignments across 820 patients and five outer iterations. However, WP14 subsequently identified 39 cross-patient exact-pixel relationships crossing folds in the original outer mapping. That outer mapping and its associated inner-fold mapping must not be used for model evaluation. A replacement duplicate-aware outer mapping must be created and independently verified, followed by regeneration and independent verification of all corresponding inner folds. No model training or performance evaluation is claimed. Dataset governance, nonzero-distance visual review, licence approval and the baseline experiment configuration remain outstanding.
 
 See [WP13 Inner-Fold Generation Implementation](wp13-inner-fold-generation.md) for the local execution procedure.

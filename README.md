@@ -11,7 +11,7 @@ NeuroVision investigates deep learning, explainability, predictive uncertainty, 
 **Phase:** 3 — Dataset Acquisition and Governance Audit  
 **Phase 1:** Closed.  
 **Phase 2:** Closed; WP05–WP08 merged and verified.  
-**Current work package:** WP13 — nested patient-grouped evaluation protocol and inner-fold integrity checks.
+**Current work package:** WP14 — OCTDL exact/near-duplicate investigation; 231 cross-patient nonzero-distance candidates are awaiting blinded visual review.
 
 Verified engineering baseline:
 - Python 3.12 src-layout package with standard-library settings, path helpers and Python RNG seeding.
@@ -22,7 +22,7 @@ Verified engineering baseline:
 - PR #5 merged as a975754c747a1c8996d842829a0223fb98b353df after both Python quality and Docker smoke-test jobs passed.
 - All three post-merge documentation-update workflows completed successfully.
 
-**Dataset status:** OCTDL V4 archive integrity, image decoding, dimensions, CSV reconciliation and patient grouping have been audited locally. The 2,064 image rows correspond to 820 unique patients; a candidate five-fold patient-grouped outer assignment has been independently verified and its mapping remains private. Exact file-level licence review, duplicate/near-duplicate screening, nested inner-fold generation and purpose-specific dataset approval remain outstanding. No model has been trained or authorised. See the [dataset register](docs/datasets/dataset-register.md), [OCTDL V4 acquisition record](docs/datasets/acquisition-record-octdl-v4.md), [acquisition/audit protocol](docs/datasets/acquisition-audit-protocol.md), [WP13 evaluation protocol](docs/experiments/wp13-cross-validation-and-model-selection.md) and [dataset tooling guide](docs/datasets/tooling.md).
+**Dataset status:** OCTDL V4 archive integrity, image decoding, dimensions, CSV reconciliation and patient grouping have been audited locally. The 2,064 image rows correspond to 820 unique patients. The initial five-fold assignment is quarantined: 47 cross-patient exact-pixel relationships were identified, 39 crossing its fold boundaries. All 354 perceptual-hash candidates were computationally examined; the 87 zero-distance candidates received blinded visual review, and a separate 231-pair nonzero-distance cross-patient review pack is awaiting visual review. The replacement split, exact file-level licence review and purpose-specific dataset approval remain outstanding. No model has been trained or authorised. See the [dataset register](docs/datasets/dataset-register.md), [OCTDL V4 acquisition record](docs/datasets/acquisition-record-octdl-v4.md), [acquisition/audit protocol](docs/datasets/acquisition-audit-protocol.md), [WP13 evaluation protocol](docs/experiments/wp13-cross-validation-and-model-selection.md), [WP14 duplicate-screening report](docs/experiments/wp14-duplicate-screening.md) and [dataset tooling guide](docs/datasets/tooling.md).
 
 WP10 tooling is merged and verified: candidate manifest generation, SHA-256 hashing, defensive ZIP/TAR inspection and extraction, and deterministic file inventories. It does not download data, decode OCT images or approve dataset use; see the [tooling guide](docs/datasets/tooling.md).
 
