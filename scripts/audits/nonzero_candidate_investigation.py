@@ -88,9 +88,7 @@ def masked_mae(a: np.ndarray, b: np.ndarray, mask: np.ndarray) -> float | None:
     return float(np.mean(np.abs(a.astype(np.float32) - b.astype(np.float32))[mask > 0]))
 
 
-def warp_to_left_reference(
-    right: np.ndarray, left_to_right_matrix: np.ndarray
-) -> np.ndarray:
+def warp_to_left_reference(right: np.ndarray, left_to_right_matrix: np.ndarray) -> np.ndarray:
     """Warp the right image into left-image coordinates.
 
     estimateAffinePartial2D(left_points, right_points) returns a transform
