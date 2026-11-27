@@ -21,6 +21,8 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from skimage.metrics import structural_similarity
+from skimage.registration import phase_cross_correlation
+from scipy.ndimage import shift as ndi_shift
 
 
 TARGET_PAIRS = {
@@ -200,6 +202,19 @@ def analyse(row: dict[str, str], review: dict[str, str],
     baseline_mae = masked_mae(a, b, mask)
     baseline_ssim = float(structural_similarity(a, b, data_range=255))
 
+    # Subpixel translation registration via scikit-image; interpolation is
+    # performed by SciPy. This is translation-only and does not prove identity.
+    phase_shift, phase_error, phase_difference = phase_cross_correlation(
+        a, b, upsample_factor=10, normalization="phase"
+    )
+    phase_aligned = ndi_shift(
+        b, shift=phase_shift, order=1, mode="constant",
+        cval=255, prefilter=False
+    )
+    phase_mask = tissue_mask(a, phase_aligned)
+    phase_mae = masked_mae(a, phase_aligned, phase_mask)
+    phase_ssim = float(structural_similarity(a, phase_aligned, data_range=255))
+
     features = feature_metrics(a, b)
     affine_ssim = None
     affine_mae = None
@@ -256,6 +271,12 @@ def analyse(row: dict[str, str], review: dict[str, str],
         "decoded_rgb_pixel_identical": pixel_equal,
         "baseline_tissue_mae": baseline_mae,
         "baseline_ssim": baseline_ssim,
+        "phase_translation_y": float(phase_shift[0]),
+        "phase_translation_x": float(phase_shift[1]),
+        "phase_registration_error": float(phase_error),
+        "phase_registration_difference": float(phase_difference),
+        "phase_registered_tissue_mae": phase_mae,
+        "phase_registered_ssim": phase_ssim,
         **features,
         "affine_registered_tissue_mae": affine_mae,
         "affine_registered_ssim": affine_ssim,
