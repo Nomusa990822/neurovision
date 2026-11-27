@@ -140,3 +140,26 @@ def test_audit_rejects_selected_pair_without_completed_visual_review(tmp_path, m
 
     with pytest.raises(SystemExit, match="High-confidence visual review"):
         AUDIT.main()
+
+def test_preflight_rejects_missing_image_before_analysis(tmp_path, monkeypatch) -> None:
+    manifest, review = _write_inputs(tmp_path, count=1)
+    (tmp_path / "images" / "right_0000.png").unlink()
+    monkeypatch.setattr(AUDIT, "TARGET_PAIRS", {"PAIR-TEST-0000"})
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "nonzero_candidate_investigation.py",
+            "--image-root",
+            str(tmp_path / "images"),
+            "--manifest",
+            str(manifest),
+            "--review-register",
+            str(review),
+            "--output",
+            str(tmp_path / "reports"),
+        ],
+    )
+
+    with pytest.raises(SystemExit, match="Selected candidate image preflight failed"):
+        AUDIT.main()
