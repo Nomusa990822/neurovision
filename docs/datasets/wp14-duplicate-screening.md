@@ -1,8 +1,8 @@
 # WP14 — Exact, near-duplicate screening and visual review
 
-**Status:** Screening executed; exact same-patient duplicate investigated; blinded visual review pack implementation proposed  
+**Status:** Initial screening and blinded visual reviews completed; computational investigation of ten nonzero-dHash candidates completed; provenance adjudication and duplicate-aware split remain pending  
 **Dataset:** OCTDL Mendeley Data Version 4  
-**Date:** 2026-11-18
+**Last updated:** 2026-11-27
 
 ## Objective
 
@@ -40,7 +40,55 @@ The candidate-pair distance distribution was: 87 at distance 0, 23 at 1, 15 at 2
 
 The original aggregate report and private candidate CSV remain in the local private audit workspace. They must not be committed or shared publicly.
 
-## Blinded visual-review pack
+## Blinded visual review and computational follow-up
+
+### Zero-dHash visual and computational review
+
+All 87 cross-patient dHash-distance-zero candidates received blinded visual review. All were visually flagged as potential duplicates with High confidence. Subsequent computational verification found:
+
+- 87/87 processed with no errors.
+- 0 byte-identical pairs.
+- 54 decoded RGB pixel-identical pairs.
+- 47 cross-patient exact-pixel edges, involving 49 unique patients.
+- 22 connected components in that exact-pixel cross-patient graph; 19 components span multiple original folds.
+- 39 of the 47 exact-pixel cross-patient edges cross the original folds.
+
+The broader dHash-zero candidate set also contained visually similar pairs that were not pixel-identical. Exact-pixel equality is stronger evidence of image-file content equality after decoding, but does not establish acquisition provenance or correct patient assignment.
+
+### Nonzero-dHash visual review
+
+The nonzero review pack covered 231 cross-patient candidates at dHash distances 1–6. The 36 same-patient nonzero candidates were outside this review pack and remain unresolved.
+
+| Visual disposition | Count |
+|---|---:|
+| `potential_duplicate` | 10 |
+| `similar_distinct` | 221 |
+| `inconclusive` | 0 |
+| **Total** | **231** |
+
+The ten visually flagged candidates were investigated computationally in private workflow [#46005797560](https://github.com/Nomusa990822/neurovision-datasets/actions/runs/46005797560). The workflow checked out public research code at immutable commit `d6df613fdf3d82629b458b60cefec00f4a84864f`, verified the OCTDL archive SHA-256, recorded input hashes and processed all ten candidates without errors.
+
+| Computational result | Count |
+|---|---:|
+| Candidates processed | 10 |
+| Processing errors | 0 |
+| Byte-identical pairs | 0 |
+| Decoded RGB pixel-identical pairs | 0 |
+| Affine estimates passing the engineering plausibility filter | 10 |
+
+The corrected affine registration direction was merged in PR #18 before this run. The prior run's affine-registered measurements are invalid and must not be used. The corrected run's metrics are screening evidence only; no automatic duplicate confirmation was made.
+
+An anonymised triage register is maintained in the private dataset repository at `research_audits/nonzero_review/nonzero_candidate_adjudication-triage.csv`. It prioritises two candidates with near-identical image geometry, four with strong transformed correspondence, one intermediate candidate, and three with weaker/ambiguous correspondence. All ten remain pending human provenance adjudication. These priority groupings are not validated thresholds or identity conclusions.
+
+## Duplicate-component reconciliation and split status
+
+The zero-dHash exact-pixel graph is a verified screening output, but the edge-level patient-link table and component membership export are not currently committed to the private dataset repository alongside the nonzero review records. Therefore the two evidence sets have **not yet been deterministically joined**. Aggregate counts are not sufficient to infer overlap or transitive component membership.
+
+The original patient-to-fold mapping remains quarantined. It must not be used for training or evaluation. No patient IDs have been merged, no labels or source records have been changed, and no new split is approved.
+
+The next gate is to make the zero-dHash edge-level and component-membership exports available inside the private audit environment, join them with the ten nonzero candidates, adjudicate provenance, then construct and validate a duplicate-aware patient-level split candidate.
+
+## Blinded visual-review pack implementation
 
 The `neurovision.datasets.duplicate_review` module creates a private review pack from the candidate CSV and extracted image directory.
 
