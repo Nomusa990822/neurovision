@@ -116,9 +116,7 @@ def test_full_audit_pipeline_processes_synthetic_pairs(tmp_path, monkeypatch) ->
     assert not any("patient_" in str(value) for value in register.to_numpy().ravel())
 
 
-def test_audit_rejects_selected_pair_without_completed_visual_review(
-    tmp_path, monkeypatch
-) -> None:
+def test_audit_rejects_selected_pair_without_completed_visual_review(tmp_path, monkeypatch) -> None:
     manifest, review = _write_inputs(tmp_path, count=1)
     review_frame = pd.read_csv(review)
     review_frame.loc[0, "confidence"] = ""
