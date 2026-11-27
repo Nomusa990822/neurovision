@@ -141,6 +141,7 @@ def test_audit_rejects_selected_pair_without_completed_visual_review(tmp_path, m
     with pytest.raises(SystemExit, match="High-confidence visual review"):
         AUDIT.main()
 
+
 def test_preflight_rejects_missing_image_before_analysis(tmp_path, monkeypatch) -> None:
     manifest, review = _write_inputs(tmp_path, count=1)
     (tmp_path / "images" / "right_0000.png").unlink()
