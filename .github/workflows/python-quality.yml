@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   python-quality:
@@ -33,24 +33,6 @@ jobs:
         run: uv sync --locked --all-groups
       - name: Install image-test dependency
         run: uv pip install --python .venv/bin/python Pillow==12.2.0
-      - name: Refresh PR branch before temporary formatting commit
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        run: |
-          git fetch origin "$GITHUB_HEAD_REF" main
-          git checkout -B "$GITHUB_HEAD_REF" FETCH_HEAD
-          git merge --no-edit origin/main
-      - name: Format audit script for review
-        run: uv run ruff format scripts/audits/nonzero_candidate_investigation.py
-      - name: Commit temporary formatter output
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add scripts/audits/nonzero_candidate_investigation.py
-          if ! git diff --cached --quiet; then
-            git commit -m "style: format duplicate audit script"
-            git push origin "HEAD:${GITHUB_HEAD_REF}"
-          fi
       - name: Run unit tests with coverage
         run: uv run pytest --cov=neurovision --cov-report=term-missing
       - name: Run Ruff lint
