@@ -5,6 +5,7 @@ import json
 import sys
 from pathlib import Path
 
+import cv2
 import numpy as np
 import pandas as pd
 import pytest
@@ -75,6 +76,29 @@ def _write_inputs(root: Path, count: int = 10) -> tuple[Path, Path]:
     pd.DataFrame(manifest_rows).to_csv(manifest, index=False)
     pd.DataFrame(review_rows).to_csv(review, index=False)
     return manifest, review
+
+
+def test_affine_warp_uses_inverse_transform_to_align_right_to_left() -> None:
+    reference = np.full((AUDIT.CANVAS, AUDIT.CANVAS), 255, dtype=np.uint8)
+    reference[150:230, 170:260] = 40
+    reference[175:205, 195:235] = 10
+
+    left_to_right = np.array([[1.0, 0.0, 7.0], [0.0, 1.0, -5.0]], dtype=np.float32)
+    right = cv2.warpAffine(
+        reference,
+        left_to_right,
+        (AUDIT.CANVAS, AUDIT.CANVAS),
+        flags=cv2.INTER_NEAREST,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=255,
+    )
+
+    baseline_ssim = AUDIT.structural_similarity(reference, right, data_range=255)
+    aligned = AUDIT.warp_to_left_reference(right, left_to_right)
+    aligned_ssim = AUDIT.structural_similarity(reference, aligned, data_range=255)
+
+    assert aligned_ssim > baseline_ssim
+    assert np.array_equal(reference, aligned)
 
 
 def test_full_audit_pipeline_processes_synthetic_pairs(tmp_path, monkeypatch) -> None:
