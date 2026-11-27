@@ -138,7 +138,7 @@ def test_audit_rejects_selected_pair_without_completed_visual_review(tmp_path, m
         ],
     )
 
-    with pytest.raises(SystemExit, match="High-confidence visual review"):
+    with pytest.raises(SystemExit, match="incomplete confidence values"):
         AUDIT.main()
 
 
