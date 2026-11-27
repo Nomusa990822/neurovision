@@ -260,8 +260,13 @@ def analyse(
         src = np.float32([ka[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
         dst = np.float32([kb[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
         matrix, inliers = cv2.estimateAffinePartial2D(
-            src, dst, method=cv2.RANSAC, ransacReprojThreshold=3.0,
-            maxIters=5000, confidence=0.99, refineIters=20,
+            src,
+            dst,
+            method=cv2.RANSAC,
+            ransacReprojThreshold=3.0,
+            maxIters=5000,
+            confidence=0.99,
+            refineIters=20,
         )
         if matrix is not None:
             warped = cv2.warpAffine(
