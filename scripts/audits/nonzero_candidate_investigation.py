@@ -25,9 +25,15 @@ from skimage.registration import phase_cross_correlation
 
 
 TARGET_PAIRS = {
-    "PAIR-NZ-0021", "PAIR-NZ-0043", "PAIR-NZ-0046",
-    "PAIR-NZ-0079", "PAIR-NZ-0080", "PAIR-NZ-0086",
-    "PAIR-NZ-0088", "PAIR-NZ-0095", "PAIR-NZ-0108",
+    "PAIR-NZ-0021",
+    "PAIR-NZ-0043",
+    "PAIR-NZ-0046",
+    "PAIR-NZ-0079",
+    "PAIR-NZ-0080",
+    "PAIR-NZ-0086",
+    "PAIR-NZ-0088",
+    "PAIR-NZ-0095",
+    "PAIR-NZ-0108",
     "PAIR-NZ-0140",
 }
 CANVAS = 512
@@ -94,7 +100,7 @@ def normalise(rgb: np.ndarray) -> np.ndarray:
     canvas = np.full((CANVAS, CANVAS, 3), 255, dtype=np.uint8)
     x = (CANVAS - nw) // 2
     y = (CANVAS - nh) // 2
-    canvas[y:y + nh, x:x + nw] = resized
+    canvas[y : y + nh, x : x + nw] = resized
     return cv2.cvtColor(canvas, cv2.COLOR_RGB2GRAY)
 
 
@@ -133,16 +139,26 @@ def feature_metrics(a: np.ndarray, b: np.ndarray) -> dict[str, object]:
 
     matcher = cv2.BFMatcher(cv2.NORM_L2)
     pairs = matcher.knnMatch(desc_a, desc_b, k=2)
-    good = [m for pair in pairs if len(pair) == 2
-            for m, n in [pair] if m.distance < SIFT_RATIO * n.distance]
+    good = [
+        m
+        for pair in pairs
+        if len(pair) == 2
+        for m, n in [pair]
+        if m.distance < SIFT_RATIO * n.distance
+    ]
     result["sift_ratio_matches"] = len(good)
 
     if len(good) >= MIN_SIFT_MATCHES:
         src = np.float32([key_a[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
         dst = np.float32([key_b[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
         matrix, inliers = cv2.estimateAffinePartial2D(
-            src, dst, method=cv2.RANSAC, ransacReprojThreshold=3.0,
-            maxIters=5000, confidence=0.99, refineIters=20,
+            src,
+            dst,
+            method=cv2.RANSAC,
+            ransacReprojThreshold=3.0,
+            maxIters=5000,
+            confidence=0.99,
+            refineIters=20,
         )
         if matrix is not None and inliers is not None:
             count = int(np.count_nonzero(inliers))
@@ -153,23 +169,26 @@ def feature_metrics(a: np.ndarray, b: np.ndarray) -> dict[str, object]:
             determinant = float(np.linalg.det(matrix[:, :2]))
             tx, ty = float(matrix[0, 2]), float(matrix[1, 2])
             plausible = (
-                count >= MIN_INLIERS and ratio >= 0.25
+                count >= MIN_INLIERS
+                and ratio >= 0.25
                 and 0.80 <= scale <= 1.25
                 and abs(rotation) <= 15
                 and abs(tx) <= 0.35 * CANVAS
                 and abs(ty) <= 0.35 * CANVAS
                 and 0.64 <= abs(determinant) <= 1.56
             )
-            result.update({
-                "sift_inliers": count,
-                "sift_inlier_ratio": ratio,
-                "affine_scale": scale,
-                "affine_rotation_degrees": rotation,
-                "affine_translation_x": tx,
-                "affine_translation_y": ty,
-                "affine_determinant": determinant,
-                "affine_plausible": bool(plausible),
-            })
+            result.update(
+                {
+                    "sift_inliers": count,
+                    "sift_inlier_ratio": ratio,
+                    "affine_scale": scale,
+                    "affine_rotation_degrees": rotation,
+                    "affine_translation_x": tx,
+                    "affine_translation_y": ty,
+                    "affine_determinant": determinant,
+                    "affine_plausible": bool(plausible),
+                }
+            )
 
     orb = cv2.ORB_create(nfeatures=2500)
     orb_a, orb_desc_a = orb.detectAndCompute(a, None)
@@ -182,17 +201,21 @@ def feature_metrics(a: np.ndarray, b: np.ndarray) -> dict[str, object]:
         and len(orb_desc_a) >= 2
         and len(orb_desc_b) >= 2
     ):
-        orb_pairs = cv2.BFMatcher(cv2.NORM_HAMMING).knnMatch(
-            orb_desc_a, orb_desc_b, k=2
-        )
-        orb_good = [m for pair in orb_pairs if len(pair) == 2
-                    for m, n in [pair] if m.distance < 0.75 * n.distance]
+        orb_pairs = cv2.BFMatcher(cv2.NORM_HAMMING).knnMatch(orb_desc_a, orb_desc_b, k=2)
+        orb_good = [
+            m
+            for pair in orb_pairs
+            if len(pair) == 2
+            for m, n in [pair]
+            if m.distance < 0.75 * n.distance
+        ]
         result["orb_ratio_matches"] = len(orb_good)
     return result
 
 
-def analyse(row: dict[str, str], review: dict[str, str],
-            root: Path, index: dict[str, list[Path]]) -> dict[str, object]:
+def analyse(
+    row: dict[str, str], review: dict[str, str], root: Path, index: dict[str, list[Path]]
+) -> dict[str, object]:
     left_path = resolve_image(row["left_file_name"], root, index)
     right_path = resolve_image(row["right_file_name"], root, index)
     left_rgb, left_meta = read_rgb(left_path)
@@ -212,8 +235,7 @@ def analyse(row: dict[str, str], review: dict[str, str],
         a, b, upsample_factor=10, normalization="phase"
     )
     phase_aligned = ndi_shift(
-        b, shift=phase_shift, order=1, mode="constant",
-        cval=255, prefilter=False
+        b, shift=phase_shift, order=1, mode="constant", cval=255, prefilter=False
     )
     phase_mask = tissue_mask(a, phase_aligned)
     phase_mae = masked_mae(a, phase_aligned, phase_mask)
@@ -229,8 +251,13 @@ def analyse(row: dict[str, str], review: dict[str, str],
         ka, da = sift.detectAndCompute(a, None)
         kb, db = sift.detectAndCompute(b, None)
         matches = cv2.BFMatcher(cv2.NORM_L2).knnMatch(da, db, k=2)
-        good = [m for pair in matches if len(pair) == 2
-                for m, n in [pair] if m.distance < SIFT_RATIO * n.distance]
+        good = [
+            m
+            for pair in matches
+            if len(pair) == 2
+            for m, n in [pair]
+            if m.distance < SIFT_RATIO * n.distance
+        ]
         src = np.float32([ka[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
         dst = np.float32([kb[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
         matrix, inliers = cv2.estimateAffinePartial2D(
@@ -239,8 +266,11 @@ def analyse(row: dict[str, str], review: dict[str, str],
         )
         if matrix is not None:
             warped = cv2.warpAffine(
-                b, matrix, (CANVAS, CANVAS),
-                flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT,
+                b,
+                matrix,
+                (CANVAS, CANVAS),
+                flags=cv2.INTER_LINEAR,
+                borderMode=cv2.BORDER_CONSTANT,
                 borderValue=255,
             )
             warped_mask = tissue_mask(a, warped)
@@ -302,8 +332,12 @@ def main() -> int:
     manifest = pd.read_csv(args.manifest, dtype=str).fillna("")
     reviews = pd.read_csv(args.review_register, dtype=str).fillna("")
     required_manifest = {
-        "pair_id", "hamming_distance", "left_file_name", "right_file_name",
-        "left_patient_id", "right_patient_id",
+        "pair_id",
+        "hamming_distance",
+        "left_file_name",
+        "right_file_name",
+        "left_patient_id",
+        "right_patient_id",
     }
     required_review = {"pair_id", "hamming_distance", "visual_disposition", "confidence"}
     if not required_manifest.issubset(manifest.columns):
@@ -353,12 +387,8 @@ def main() -> int:
         "decoded_rgb_pixel_identical_pairs": sum(
             bool(x["decoded_rgb_pixel_identical"]) for x in results
         ),
-        "plausible_affine_registrations": sum(
-            bool(x["affine_plausible"]) for x in results
-        ),
-        "visual_disposition_counts": dict(Counter(
-            str(x["visual_disposition"]) for x in results
-        )),
+        "plausible_affine_registrations": sum(bool(x["affine_plausible"]) for x in results),
+        "visual_disposition_counts": dict(Counter(str(x["visual_disposition"]) for x in results)),
         "errors": errors,
         "privacy": "No filenames, patient identifiers, source images, or raw metadata exported.",
         "limitations": [
@@ -375,13 +405,18 @@ def main() -> int:
     (args.output / "investigation-summary.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8"
     )
-    print(json.dumps({
-        "processed": len(results),
-        "errors": len(errors),
-        "byte_identical": summary["byte_identical_pairs"],
-        "pixel_identical": summary["decoded_rgb_pixel_identical_pairs"],
-        "plausible_affine": summary["plausible_affine_registrations"],
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "processed": len(results),
+                "errors": len(errors),
+                "byte_identical": summary["byte_identical_pairs"],
+                "pixel_identical": summary["decoded_rgb_pixel_identical_pairs"],
+                "plausible_affine": summary["plausible_affine_registrations"],
+            },
+            indent=2,
+        )
+    )
     return 0 if len(results) == len(TARGET_PAIRS) and not errors else 2
 
 
