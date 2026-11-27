@@ -33,6 +33,14 @@ jobs:
         run: uv sync --locked --all-groups
       - name: Install image-test dependency
         run: uv pip install --python .venv/bin/python Pillow==12.2.0
+      - name: Format audit script for review
+        run: uv run ruff format scripts/audits/nonzero_candidate_investigation.py
+      - name: Upload formatted audit script for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: nv-dup-audit-03-formatted-script
+          path: scripts/audits/nonzero_candidate_investigation.py
+          retention-days: 1
       - name: Run unit tests with coverage
         run: uv run pytest --cov=neurovision --cov-report=term-missing
       - name: Run Ruff lint
