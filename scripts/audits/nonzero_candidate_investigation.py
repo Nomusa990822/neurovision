@@ -367,9 +367,11 @@ def main() -> int:
             # traceback remains in the private Actions log for engineering diagnosis.
             if isinstance(exc, KeyError) and exc.args:
                 missing_key = exc.args[0]
-                safe_schema_keys = required_manifest | required_review | {
-                    "width", "height", "mode", "format", "affine_plausible"
-                }
+                safe_schema_keys = (
+                    required_manifest
+                    | required_review
+                    | {"width", "height", "mode", "format", "affine_plausible"}
+                )
                 if isinstance(missing_key, str) and missing_key in safe_schema_keys:
                     error_record["missing_schema_key"] = missing_key
                 else:
