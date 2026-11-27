@@ -88,6 +88,26 @@ def masked_mae(a: np.ndarray, b: np.ndarray, mask: np.ndarray) -> float | None:
     return float(np.mean(np.abs(a.astype(np.float32) - b.astype(np.float32))[mask > 0]))
 
 
+def warp_to_left_reference(
+    right: np.ndarray, left_to_right_matrix: np.ndarray
+) -> np.ndarray:
+    """Warp the right image into left-image coordinates.
+
+    estimateAffinePartial2D(left_points, right_points) returns a transform
+    from left to right. warpAffine needs the inverse matrix here so that its
+    output is expressed in the left-image reference frame.
+    """
+    right_to_left_matrix = cv2.invertAffineTransform(left_to_right_matrix)
+    return cv2.warpAffine(
+        right,
+        right_to_left_matrix,
+        (CANVAS, CANVAS),
+        flags=cv2.INTER_LINEAR,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=255,
+    )
+
+
 def feature_metrics(a: np.ndarray, b: np.ndarray) -> dict[str, object]:
     sift = cv2.SIFT_create(nfeatures=2500)
     key_a, desc_a = sift.detectAndCompute(a, None)
@@ -244,14 +264,7 @@ def analyse(
             refineIters=20,
         )
         if matrix is not None:
-            warped = cv2.warpAffine(
-                b,
-                matrix,
-                (CANVAS, CANVAS),
-                flags=cv2.INTER_LINEAR,
-                borderMode=cv2.BORDER_CONSTANT,
-                borderValue=255,
-            )
+            warped = warp_to_left_reference(b, matrix)
             warped_mask = tissue_mask(a, warped)
             affine_mae = masked_mae(a, warped, warped_mask)
             affine_ssim = float(structural_similarity(a, warped, data_range=255))
@@ -433,6 +446,7 @@ def main() -> int:
             "not proof of duplication.",
             "Affine plausibility thresholds are conservative engineering filters, "
             "not validated clinical thresholds.",
+            "Affine registration uses the inverse left-to-right transform to map the right image into left coordinates.",
             "SSIM and MAE depend on normalisation, image content, and registration.",
             "No patient identity merging or fold assignment changes are performed.",
             "Human provenance review remains necessary for suspected cross-patient duplicates.",
