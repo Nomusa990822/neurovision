@@ -8,21 +8,20 @@ No filenames, patient identifiers, image pixels, or source metadata are exported
 from __future__ import annotations
 
 import argparse
-import csv
 import hashlib
 import json
 import sys
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import cv2
 import numpy as np
 import pandas as pd
 from PIL import Image
+from scipy.ndimage import shift as ndi_shift
 from skimage.metrics import structural_similarity
 from skimage.registration import phase_cross_correlation
-from scipy.ndimage import shift as ndi_shift
 
 
 TARGET_PAIRS = {
@@ -177,7 +176,12 @@ def feature_metrics(a: np.ndarray, b: np.ndarray) -> dict[str, object]:
     orb_b, orb_desc_b = orb.detectAndCompute(b, None)
     result["orb_keypoints_left"] = len(orb_a)
     result["orb_keypoints_right"] = len(orb_b)
-    if orb_desc_a is not None and orb_desc_b is not None and len(orb_desc_a) >= 2 and len(orb_desc_b) >= 2:
+    if (
+        orb_desc_a is not None
+        and orb_desc_b is not None
+        and len(orb_desc_a) >= 2
+        and len(orb_desc_b) >= 2
+    ):
         orb_pairs = cv2.BFMatcher(cv2.NORM_HAMMING).knnMatch(
             orb_desc_a, orb_desc_b, k=2
         )
@@ -340,7 +344,7 @@ def main() -> int:
         )
     summary = {
         "audit": "NV-DUP-AUDIT-03",
-        "generated_utc": datetime.now(timezone.utc).isoformat(),
+        "generated_utc": datetime.now(UTC).isoformat(),
         "method": "OpenCV + NumPy + SciPy dependency environment + scikit-image + Pillow + Pandas",
         "selected_candidates": len(TARGET_PAIRS),
         "successfully_processed": len(results),
@@ -358,8 +362,10 @@ def main() -> int:
         "errors": errors,
         "privacy": "No filenames, patient identifiers, source images, or raw metadata exported.",
         "limitations": [
-            "SIFT/ORB correspondences and RANSAC affine fits are screening evidence, not proof of duplication.",
-            "Affine plausibility thresholds are conservative engineering filters, not validated clinical thresholds.",
+            "SIFT/ORB correspondences and RANSAC affine fits are screening evidence, "
+            "not proof of duplication.",
+            "Affine plausibility thresholds are conservative engineering filters, "
+            "not validated clinical thresholds.",
             "SSIM and MAE depend on normalisation, image content, and registration.",
             "No patient identity merging or fold assignment changes are performed.",
             "Human provenance review remains necessary for suspected cross-patient duplicates.",
