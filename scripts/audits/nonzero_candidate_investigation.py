@@ -347,6 +347,7 @@ def main() -> int:
     errors = []
     for pair_id in sorted(TARGET_PAIRS):
         row = manifest.loc[pair_id].to_dict()
+        row["pair_id"] = pair_id
         review = reviews.loc[pair_id].to_dict()
         if int(row["hamming_distance"]) != int(review["hamming_distance"]):
             raise SystemExit("Manifest/review dHash disagreement")
