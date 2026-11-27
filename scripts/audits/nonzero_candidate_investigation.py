@@ -17,8 +17,8 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-import pandas as pd
 from PIL import Image
+import pandas as pd
 from scipy.ndimage import shift as ndi_shift
 from skimage.metrics import structural_similarity
 from skimage.registration import phase_cross_correlation
