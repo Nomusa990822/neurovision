@@ -326,6 +326,17 @@ def main() -> int:
     if manifest["pair_id"].duplicated().any() or reviews["pair_id"].duplicated().any():
         raise SystemExit("Duplicate pair IDs found in input registers")
 
+    allowed_dispositions = {"potential_duplicate", "similar_distinct", "inconclusive"}
+    allowed_confidence = {"High", "Medium", "Low"}
+    if reviews["visual_disposition"].str.strip().eq("").any():
+        raise SystemExit("Review register contains incomplete visual dispositions")
+    if reviews["confidence"].str.strip().eq("").any():
+        raise SystemExit("Review register contains incomplete confidence values")
+    if not set(reviews["visual_disposition"]).issubset(allowed_dispositions):
+        raise SystemExit("Review register contains an unsupported visual disposition")
+    if not set(reviews["confidence"]).issubset(allowed_confidence):
+        raise SystemExit("Review register contains an unsupported confidence value")
+
     manifest = manifest.set_index("pair_id")
     reviews = reviews.set_index("pair_id")
     missing = TARGET_PAIRS - set(manifest.index) | (TARGET_PAIRS - set(reviews.index))
@@ -343,6 +354,23 @@ def main() -> int:
             raise SystemExit("Selected candidate lacks High-confidence visual review")
 
     index = build_image_index(root)
+
+    # Resolve and decode every selected image before beginning any comparison.
+    # This prevents partial scientific output when one candidate input is invalid.
+    for pair_id in sorted(TARGET_PAIRS):
+        row = manifest.loc[pair_id].to_dict()
+        try:
+            left_path = resolve_image_path(row["left_file_name"], root, index)
+            right_path = resolve_image_path(row["right_file_name"], root, index)
+            read_rgb(left_path)
+            read_rgb(right_path)
+        except Exception as exc:
+            print(
+                f"{pair_id}: image preflight failed ({type(exc).__name__})",
+                file=sys.stderr,
+            )
+            raise SystemExit("Selected candidate image preflight failed") from exc
+
     results = []
     errors = []
     for pair_id in sorted(TARGET_PAIRS):
