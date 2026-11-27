@@ -446,7 +446,8 @@ def main() -> int:
             "not proof of duplication.",
             "Affine plausibility thresholds are conservative engineering filters, "
             "not validated clinical thresholds.",
-            "Affine registration uses the inverse left-to-right transform to map the right image into left coordinates.",
+            "Affine registration inverts the left-to-right transform to map the right image "
+            "into left coordinates.",
             "SSIM and MAE depend on normalisation, image content, and registration.",
             "No patient identity merging or fold assignment changes are performed.",
             "Human provenance review remains necessary for suspected cross-patient duplicates.",
