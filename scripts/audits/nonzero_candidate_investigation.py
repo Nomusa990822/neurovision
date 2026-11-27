@@ -23,7 +23,6 @@ from scipy.ndimage import shift as ndi_shift
 from skimage.metrics import structural_similarity
 from skimage.registration import phase_cross_correlation
 
-
 TARGET_PAIRS = {
     "PAIR-NZ-0021",
     "PAIR-NZ-0043",
