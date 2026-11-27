@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import sys
+import traceback
 from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
@@ -330,11 +331,23 @@ def main() -> int:
     missing = TARGET_PAIRS - set(manifest.index) | (TARGET_PAIRS - set(reviews.index))
     if missing:
         raise SystemExit("One or more target pair IDs are missing")
+
+    # The selected computational cohort must be backed by completed human review.
+    # Validate only the ten selected cross-patient candidates; other register rows
+    # are outside this audit and may belong to separate review batches.
+    for pair_id in sorted(TARGET_PAIRS):
+        review_row = reviews.loc[pair_id]
+        if review_row["visual_disposition"] != "potential_duplicate":
+            raise SystemExit("Selected candidate lacks the required visual disposition")
+        if review_row["confidence"] != "High":
+            raise SystemExit("Selected candidate lacks High-confidence visual review")
+
     index = build_image_index(root)
     results = []
     errors = []
     for pair_id in sorted(TARGET_PAIRS):
         row = manifest.loc[pair_id].to_dict()
+        row["pair_id"] = pair_id
         review = reviews.loc[pair_id].to_dict()
         if int(row["hamming_distance"]) != int(review["hamming_distance"]):
             raise SystemExit("Manifest/review dHash disagreement")
@@ -346,8 +359,26 @@ def main() -> int:
             results.append(analyse(row, review, root, index))
             print(f"{pair_id}: completed")
         except Exception as exc:
-            errors.append({"pair_id": pair_id, "error_type": type(exc).__name__})
+            error_record: dict[str, object] = {
+                "pair_id": pair_id,
+                "error_type": type(exc).__name__,
+            }
+            # Keep potentially identifying values out of exported reports. The full
+            # traceback remains in the private Actions log for engineering diagnosis.
+            if isinstance(exc, KeyError) and exc.args:
+                missing_key = exc.args[0]
+                safe_schema_keys = (
+                    required_manifest
+                    | required_review
+                    | {"width", "height", "mode", "format", "affine_plausible"}
+                )
+                if isinstance(missing_key, str) and missing_key in safe_schema_keys:
+                    error_record["missing_schema_key"] = missing_key
+                else:
+                    error_record["missing_schema_key"] = "non_schema_key_redacted"
+            errors.append(error_record)
             print(f"{pair_id}: ERROR ({type(exc).__name__})", file=sys.stderr)
+            traceback.print_exc(file=sys.stderr)
 
     args.output.mkdir(parents=True, exist_ok=True)
     if results:
